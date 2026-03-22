@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --claude-orange: #d97a53;
+  --deep-violet: #4a2b8e;
+  --bg-color: #FAFAFA;
+  --text-color: #2c2522;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
