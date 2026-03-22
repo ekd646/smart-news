@@ -66,7 +66,6 @@ function extractAIAnalysis(headline: string, level: string) {
      };
    }
 
-   // Default Macro / Geopolitical / Business
    return {
        jargon: "Macroeconomic Volatility & Beta Repricing",
        jargonDef: level === "Beginner" ? "Big global news makes investors nervous, so they move their money to safer places like cash or massive reliable corporations." :
@@ -81,12 +80,12 @@ export default function Page() {
   const [country, setCountry] = useState("Global Markets");
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState<"login" | "signup" | "premium">("premium");
   const [activeArticle, setActiveArticle] = useState<NewsItem | null>(null);
   
   const [realNews, setRealNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch LIVE News
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -119,8 +118,6 @@ export default function Page() {
   }, [country, date]);
 
   const uniqueCategories = Array.from(new Set(realNews.map(n => n.category)));
-  
-  // Real-Time Semantic Engine Evaluation
   const aiData = activeArticle ? extractAIAnalysis(activeArticle.headline, level) : null;
 
   return (
@@ -131,33 +128,80 @@ export default function Page() {
       </div>
 
       <AnimatePresence>
-        {isModalOpen && (
+        {isModalOpen && !activeArticle && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
           >
             <motion.div 
               initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }}
-              className="bg-[#131315] border border-white/10 shadow-2xl rounded-2xl p-8 max-w-lg w-full relative"
+              className="bg-[#131315] border border-white/10 shadow-2xl rounded-2xl p-8 max-w-md w-full relative"
             >
               <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
                 <X size={24} />
               </button>
-              <div className="flex justify-center mb-6">
-                 <svg width="48" height="48" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="shadow-md rounded-[10px]">
-                  <rect width="40" height="40" rx="10" fill="#1b1b1b" />
-                  <path d="M12 28V12L28 28V12" stroke="#d97a53" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="28" cy="12" r="3" fill="#d97a53" />
-                </svg>
-              </div>
-              <h2 className="text-3xl font-extrabold text-white text-center mb-2">Upgrade to <span className="text-[#d97a53]">Terminal</span></h2>
-              <p className="text-[#dbc1b8] text-center mb-8 text-sm">Gain access to Level 3 institutional order flow data, unlimited AI summaries, and real-time alerts.</p>
-              <button className="w-full py-3 bg-[#d97a53] text-white font-bold rounded-lg shadow-lg hover:opacity-90 transition-opacity">
-                Start 14-Day Free Trial
-              </button>
-              <div className="mt-6 border-t border-white/10 pt-4 text-center">
+              
+              {modalMode === "premium" && (
+                <div className="animate-fade-in-up">
+                  <div className="flex justify-center mb-6">
+                     <svg className="shadow-2xl drop-shadow-[0_0_15px_rgba(217,122,83,0.4)]" width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                          <linearGradient id="finGradient2" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stopColor="#ffb599" />
+                            <stop offset="50%" stopColor="#d97a53" />
+                            <stop offset="100%" stopColor="#531900" />
+                          </linearGradient>
+                        </defs>
+                        <rect width="100" height="100" rx="24" fill="#0a0a0c" stroke="url(#finGradient2)" strokeWidth="3"/>
+                        <path d="M30 70 V30 L70 70 V30" stroke="url(#finGradient2)" strokeWidth="8" strokeLinecap="square" strokeLinejoin="miter"/>
+                        <path d="M70 30 H45" stroke="url(#finGradient2)" strokeWidth="8" strokeLinecap="square"/>
+                     </svg>
+                  </div>
+                  <h2 className="text-3xl font-extrabold text-white text-center mb-2">Upgrade to <span className="text-[#d97a53]">Terminal</span></h2>
+                  <p className="text-[#dbc1b8] text-center mb-8 text-sm">Gain access to Level 3 institutional order flow data, unlimited AI summaries, and real-time alerts.</p>
+                  <button className="w-full py-3 bg-[#d97a53] text-[#531900] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity">
+                    Start 14-Day Free Trial
+                  </button>
+                </div>
+              )}
+
+              {modalMode === "login" && (
+                <div className="animate-fade-in-up">
+                  <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Welcome Back</h2>
+                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Sign in to Nis Finance Co. to continue.</p>
+                  <div className="space-y-4 mb-6">
+                    <input type="email" placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="password" placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                  </div>
+                  <button className="w-full py-3 bg-white text-[#131315] font-black uppercase tracking-widest rounded-lg shadow-lg hover:bg-gray-200 transition-colors mb-4">
+                    Sign In
+                  </button>
+                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Don't have an account? <span onClick={() => setModalMode("signup")} className="text-[#d97a53] cursor-pointer hover:underline font-bold">Create one</span></p>
+                </div>
+              )}
+
+              {modalMode === "signup" && (
+                <div className="animate-fade-in-up">
+                  <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Create Account</h2>
+                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Join Nis Finance Co. for elite market access.</p>
+                  <div className="space-y-4 mb-6">
+                    <div className="flex gap-4">
+                      <input type="text" placeholder="First Name" className="w-1/2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                      <input type="text" placeholder="Last Name" className="w-1/2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    </div>
+                    <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="password" placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                  </div>
+                  <button className="w-full py-3 bg-[#d97a53] text-[#531900] font-black uppercase tracking-widest rounded-lg shadow-lg hover:opacity-90 transition-opacity mb-4 border border-[#531900]/20">
+                    Create Account
+                  </button>
+                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Already a member? <span onClick={() => setModalMode("login")} className="text-[#d97a53] cursor-pointer hover:underline font-bold">Sign In</span></p>
+                </div>
+              )}
+
+              <div className="mt-6 pt-4 text-center">
                  <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 mb-3 font-medium">
-                     <ShieldCheck size={14} className="text-[#5ed9ce]" /> Guaranteed Safe & Secure Checkout
+                     <ShieldCheck size={14} className="text-[#5ed9ce]" /> Guaranteed Safe & Secure Configuration
                  </div>
                  <div className="flex justify-center items-center gap-2 grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
                      <div className="bg-white px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-300 h-6"><span className="text-[#142A7C] font-extrabold text-[11px] tracking-tighter">VISA</span></div>
@@ -218,29 +262,41 @@ export default function Page() {
         initial={{ y: -50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8 }}
         className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center justify-center pt-6 pb-6 bg-gradient-to-b from-[#131315] via-[#131315]/90 to-transparent backdrop-blur-md"
       >
-        <div className="flex items-center gap-2 cursor-pointer mb-5" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <svg className="shadow-lg rounded-[10px]" fill="none" height="36" viewBox="0 0 40 40" width="36" xmlns="http://www.w3.org/2000/svg">
-            <rect fill="#1b1b1b" height="40" rx="10" width="40"></rect>
-            <path d="M12 28V12L28 28V12" stroke="#d97a53" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4"></path>
-            <circle cx="28" cy="12" fill="#d97a53" r="3"></circle>
+        <div className="flex items-center gap-3 cursor-pointer mb-5 group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <svg className="shadow-2xl drop-shadow-[0_0_15px_rgba(217,122,83,0.4)] transform group-hover:scale-105 transition-transform" width="44" height="44" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="finGradientHeader" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#ffb599" />
+                <stop offset="50%" stopColor="#d97a53" />
+                <stop offset="100%" stopColor="#531900" />
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" rx="24" fill="#0a0a0c" stroke="url(#finGradientHeader)" strokeWidth="3"/>
+            <path d="M30 70 V30 L70 70 V30" stroke="url(#finGradientHeader)" strokeWidth="8" strokeLinecap="square" strokeLinejoin="miter"/>
+            <path d="M70 30 H45" stroke="url(#finGradientHeader)" strokeWidth="8" strokeLinecap="square"/>
           </svg>
-          <span className="text-xl md:text-2xl font-black tracking-tighter text-white uppercase font-sans whitespace-nowrap">Nis Finance <span className="text-[#d97a53]">Co.</span></span>
+          <div className="flex flex-col">
+            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Nis Finance <span className="text-[#d97a53]">Co.</span></span>
+            <span className="text-[9px] font-bold tracking-[0.4em] text-[#d97a53] uppercase leading-none mt-1">Intelligence Division</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-4 mb-5 border-b border-white/10 pb-4 px-12">
-          <button onClick={() => setIsModalOpen(true)} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Login</button>
+          <button onClick={() => { setModalMode("login"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Login</button>
           <div className="w-1 h-1 bg-white/20 rounded-full"></div>
-          <button onClick={() => setIsModalOpen(true)} className="bg-[#d97a53] text-[#531900] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Premium</button>
+          <button onClick={() => { setModalMode("signup"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Up</button>
+          <div className="w-1 h-1 bg-white/20 rounded-full"></div>
+          <button onClick={() => { setModalMode("premium"); setIsModalOpen(true); }} className="bg-[#d97a53] text-[#531900] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Premium</button>
         </div>
 
         <div className="flex items-center gap-8 md:gap-16 font-sans tracking-widest font-bold text-[11px] md:text-xs uppercase">
           <a className="text-[#ffb599] hover:text-white transition-all duration-300 cursor-pointer">Market</a>
           <a className="text-[#a38c84] hover:text-white transition-all duration-300 cursor-pointer">Intelligence</a>
-          <button onClick={() => setIsModalOpen(true)} className="text-[#a38c84] hover:text-[#d97a53] transition-all duration-300 cursor-pointer">Terminal</button>
+          <button onClick={() => { setModalMode("premium"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#d97a53] transition-all duration-300 cursor-pointer">Terminal</button>
         </div>
       </motion.header>
 
-      <main className="pt-56 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
+      <main className="pt-64 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#533598]/20 border border-[#533598]/30 mb-8">
              <Sparkles size={14} className="text-[#d0bcff]" />
@@ -258,7 +314,6 @@ export default function Page() {
                 title="Select Calendar Date to Fetch Live Data"
                 className="bg-transparent text-white font-bold text-xs sm:text-sm tracking-widest outline-none cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer w-full" 
               />
-              <div className="absolute right-4 pointer-events-none text-[#d97a53] text-[10px]">SELECT</div>
             </div>
 
             <div className="w-[1px] h-6 bg-white/10 hidden lg:block"></div>
@@ -360,7 +415,7 @@ export default function Page() {
           <a href="#" className="hover:text-[#ffb599] transition-colors">Cookie Policy</a>
         </div>
         <div className="flex flex-col items-center gap-4">
-            <span className="text-[10px] text-white/50 uppercase tracking-widest font-extrabold flex items-center gap-1"><ShieldCheck size={12}/> Global Secure Payments</span>
+            <span className="text-[10px] text-white/50 uppercase tracking-widest font-extrabold flex items-center gap-1"><ShieldCheck size={12}/> Global Secure Configurations</span>
             <div className="flex justify-center items-center gap-3 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
                <div className="bg-white px-3 py-1.5 rounded shadow-sm text-[#142A7C] font-extrabold text-xs tracking-tighter">VISA</div>
                <div className="bg-white px-3 py-1.5 rounded shadow-sm flex items-center justify-center"><div className="flex"><div className="w-3.5 h-3.5 rounded-full bg-[#EA001B] mix-blend-multiply relative left-1.5 z-10"></div><div className="w-3.5 h-3.5 rounded-full bg-[#F79E1B] mix-blend-multiply relative right-1"></div></div></div>
@@ -368,7 +423,7 @@ export default function Page() {
                <div className="text-white font-bold text-xs bg-black px-3 py-1.5 rounded border border-white/20"> Pay</div>
             </div>
         </div>
-        <div className="text-[#a38c84]/50 text-[10px]">© 2026 Nis Finance Co. All rights reserved.</div>
+        <div className="text-[#a38c84]/50 text-[10px]">© 2026 Nis Finance Co. All rights reserved. Architected for Scale.</div>
       </motion.footer>
     </div>
   );
