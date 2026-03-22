@@ -1,18 +1,92 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
-:root {
-  --claude-orange: #d97a53;
-  --deep-violet: #4a2b8e;
-  --bg-color: #FAFAFA;
-  --text-color: #2c2522;
+@import "tailwindcss";
+
+@theme {
+  --color-primary-container: #d97a53;
+  --color-secondary-container: #533598;
+  --color-tertiary-container: #0da59b;
+  --color-error: #ffb4ab;
+  --color-surface-dim: #131315;
+  --color-surface-container-lowest: #0e0e10;
+  --color-surface-container: #201f21;
+  --color-on-tertiary: #003733;
+  --color-tertiary: #5ed9ce;
+  --color-primary-fixed-dim: #ffb599;
+  --color-on-tertiary-fixed: #00201d;
+  --color-surface: #131315;
+  --color-on-error-container: #ffdad6;
+  --color-inverse-on-surface: #313032;
+  --color-on-surface: #e5e1e4;
+  --color-on-background: #e5e1e4;
+  --color-on-secondary-fixed-variant: #513395;
+  --color-surface-variant: #353437;
+  --color-surface-bright: #39393b;
+  --color-error-container: #93000a;
+  --color-on-tertiary-fixed-variant: #00504b;
+  --color-surface-tint: #ffb599;
+  --color-secondary-fixed-dim: #d0bcff;
+  --color-surface-container-high: #2a2a2c;
+  --color-surface-container-low: #1c1b1d;
+  --color-primary: #ffb599;
+  --color-on-surface-variant: #dbc1b8;
+  --color-on-secondary-fixed: #23005c;
+  --color-background: #131315;
+  --color-on-error: #690005;
+  --color-on-primary-fixed-variant: #79300f;
+  --color-secondary-fixed: #e9ddff;
+  --color-on-primary-container: #531900;
+  --color-primary-fixed: #ffdbce;
+  --color-inverse-surface: #e5e1e4;
+  --color-inverse-primary: #974724;
+  --color-outline: #a38c84;
+  --color-tertiary-fixed: #7df6ea;
+  --color-surface-container-highest: #353437;
+  --color-on-tertiary-container: #00332f;
+  --color-on-secondary: #3a177d;
+  --color-tertiary-fixed-dim: #5ed9ce;
+  --color-on-primary: #5a1c00;
+  --color-secondary: #d0bcff;
+  --color-outline-variant: #55433c;
+  --color-on-primary-fixed: #370e00;
+  --color-on-secondary-container: #c3abff;
+  
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-family: system-ui, -apple-system, sans-serif;
-  margin: 0;
-  padding: 0;
+    background-color: #131315;
+    color: #e5e1e4;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+::selection {
+    background-color: var(--color-primary-container);
+    color: #fff;
+}
+
+.glass-card {
+    background: rgba(53, 52, 55, 0.4);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(163, 140, 132, 0.1);
+}
+
+.bg-orb-peach {
+    background: radial-gradient(circle, rgba(217, 122, 83, 0.12) 0%, rgba(217, 122, 83, 0) 70%);
+}
+
+.bg-orb-violet {
+    background: radial-gradient(circle, rgba(83, 53, 152, 0.15) 0%, rgba(83, 53, 152, 0) 70%);
+}
+
+.sparkline-gradient-up {
+    fill: url(#gradient-up);
+}
+
+.sparkline-gradient-down {
+    fill: url(#gradient-down);
 }
