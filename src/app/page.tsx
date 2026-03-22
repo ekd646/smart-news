@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Home, Bell, User, Calendar } from "lucide-react";
+import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Calendar } from "lucide-react";
 
-// Top 60 Countries List
 const TOP_COUNTRIES = [
   "Global Markets", "United States", "China", "Japan", "Germany", "India", "United Kingdom", "France", "Italy", "Canada", "Brazil", 
   "Russia", "South Korea", "Australia", "Mexico", "Spain", "Indonesia", "Netherlands", "Saudi Arabia", "Turkey", "Switzerland", 
@@ -14,221 +13,115 @@ const TOP_COUNTRIES = [
   "Algeria", "Qatar", "Kazakhstan", "Hungary", "Kuwait", "Morocco", "Slovakia", "Ecuador", "Kenya", "Angola"
 ];
 
-const BASE_TEMPLATES = [
-  {
-    category: "Macro Economics",
-    headlineTemplate: "{country} Treasury Yields {dir_word} on Policy Shift",
-    shortTemplate: "Sovereign bond markets in {country} are reacting to unexpected regional data.",
-    jargon: "Yield Curve & Monetary Policy",
-    jargonDef: {
-      Beginner: "The central bank (which controls money) is changing rules to handle prices. This affects how much interest governments pay when they borrow money.",
-      Intermediate: "A shift in monetary policy signals tighter or looser conditions ahead. Consequently, the sovereign debt market reprices these expectations into new yields.",
-      Expert: "OIS liquidity matrices are fully pricing in structural adjustments at the next meeting, driving intense volatility across the {country} sovereign yield curve."
-    },
-    mathCalc: "Bond Math: A 10-year bond with a modified duration of 8.5 will suffer an 8.5% price drop if yields rise by {rand_rate}%."
-  },
-  {
-    category: "Tech & AI",
-    headlineTemplate: "{country} Tech Sector Secures ${rand_val}B in Series B",
-    shortTemplate: "Venture capital in {country} floods the generative AI infrastructure sector.",
-    jargon: "Series B & Valuation",
-    jargonDef: {
-      Beginner: "A 'Series B' is a big round of funding a startup gets after proving their product works. Rich investors buy a piece of the company.",
-      Intermediate: "Series B funding typically occurs when a company has established product-market fit and needs immense capital to scale global operations.",
-      Expert: "Post-money valuations expand significantly during Series B as institutional LPs deploy dry powder into high-conviction momentum plays."
-    },
-    mathCalc: "Equity Dilution: If founders own 60% and sell 20% of the new post-money valuation to VCs for ${rand_val}M, their ownership drops to 48% (60% * 0.8)."
-  },
-  {
-    category: "Energy & Commodities",
-    headlineTemplate: "Strategic Reserves Tapped: {rand_val}M Barrels in {country}",
-    shortTemplate: "Government intervention aims to stabilize energy commodity prices.",
-    jargon: "Strategic Reserves & Crude Spot",
-    jargonDef: {
-      Beginner: "The government in {country} is releasing its emergency oil savings to flood the market and bring gas prices down for regular citizens.",
-      Intermediate: "Releasing barrels from the SPR increases immediate spot market supply, attempting to suppress front-month futures prices.",
-      Expert: "SPR drawdowns increase physical liquidity but can steepen the contango curve if market makers expect future inventory restocking to bid up deferred contracts."
-    },
-    mathCalc: "Commodity Math: Injecting {rand_val} million barrels into a market consuming 20M barrels increases supply. If price elasticity of demand is -0.1, prices theoretically adjust downward proportionately."
-  },
-  {
-    category: "Crypto & Web3",
-    headlineTemplate: "Institution Inflows Surge: {rand_val} BTC bought in {country}",
-    shortTemplate: "Algorithmic accumulation of decentralized assets accelerates.",
-    jargon: "Institutional Accumulation",
-    jargonDef: {
-      Beginner: "Big banks and rich companies are quietly buying up a lot of Bitcoin because they think the price will go up long-term.",
-      Intermediate: "Institutional accumulation refers to sustained, large-volume buying by corporate treasurys or hedge funds, usually outside of retail spot markets.",
-      Expert: "On-chain heuristics show massive outflows from centralized exchange hot wallets to multi-sig cold storage, signaling high-timeframe institutional holding."
-    },
-    mathCalc: "Liquidity Math: If exchanges hold 2M BTC and institutions buy {rand_val}k BTC, available trading supply drops severely, increasing the price impact of every new marginal buyer."
-  },
-  {
-    category: "Equities & Bonds",
-    headlineTemplate: "{country} Blue-Chips {dir_word} on Q{rand_q} Earnings",
-    shortTemplate: "Major tech and legacy firms navigate consensus revenue estimates.",
-    jargon: "Earnings Beat/Miss & Consensus",
-    jargonDef: {
-      Beginner: "Big companies announced how much money they made. If it's more than experts guessed, people buy the stock; if less, they sell it.",
-      Intermediate: "When Q-over-Q EPS deviates from Wall Street consensus, it triggers algorithmic momentum buying or selling and forces portfolio rebalancing.",
-      Expert: "The EPS delta triggered aggressive options activity, forcing market makers to delta-hedge by buying/selling the underlying asset, fueling a systemic gamma squeeze."
-    },
-    mathCalc: "P/E Expansion: A company earning $5 per share at a P/E ratio of 20 trades at $100. If earnings jump and excitement pushes the P/E to {rand_rate}, the stock price adjusts drastically."
-  },
-  {
-    category: "Macro Economics",
-    headlineTemplate: "{country} Employment Figures Spark Market {dir_noun}",
-    shortTemplate: "Unemployment figures deviated from baseline expectations in {country}.",
-    jargon: "Non-Farm Payrolls (NFP)",
-    jargonDef: {
-      Beginner: "Employment reports show how many people have jobs. A strong job market means the local economy in {country} is doing really well right now.",
-      Intermediate: "Tight labor markets typically lead to wage inflation, forcing the central bank to maintain restrictive rates longer.",
-      Expert: "Unexpected labor market tightness flattens the Phillips Curve, leading to stagflationary concerns if productivity metrics fail to outpace sequential wage growth."
-    },
-    mathCalc: "Wage Inflation: If workers demand a {rand_rate}% raise, but productivity only increases 1%, companies face increased unit labor costs, forcing retail price hikes to maintain margins."
-  },
-  {
-    category: "Banking & Finance",
-    headlineTemplate: "{country} Regional Banks Audit Reveals ${rand_val}B Exposure",
-    shortTemplate: "Commercial deposits face volatility amid stress tests.",
-    jargon: "Held-to-Maturity & Liquidity",
-    jargonDef: {
-      Beginner: "People are watching banks closely in {country} to make sure they have enough cash on hand if everyone wants their money back at once.",
-      Intermediate: "When a bank's Held-To-Maturity (HTM) losses threaten its equity capital, uninsured depositors withdraw funds, risking a liquidity crunch.",
-      Expert: "Duration mismatch between long-term deeply underwater holdings and short-term retail deposits forces fire sales, realizing paper losses and wiping out Tier 1 Capital."
-    },
-    mathCalc: "Leverage Ratio: A bank has $10B in deposits and $1B in equity (10x leverage). They buy $10B in bonds. If rates change and bond value drops {rand_rate}%, the loss can wipe out massive equity instantly."
-  },
-  {
-    category: "Tech & AI",
-    headlineTemplate: "Hardware Export Quota Adjusted to {rand_val}M units in {country}",
-    shortTemplate: "Geopolitical tariffs throttle advanced computer chip supply chains.",
-    jargon: "Export Controls & Foundries",
-    jargonDef: {
-      Beginner: "Countries are fighting over who gets the fastest computer chips. {country} is managing who can buy their best technology.",
-      Intermediate: "Export quotas on cutting-edge lithography machines prevent rival economic zones from training advanced LLM architectures.",
-      Expert: "Entity List updates structurally sever the global semiconductor supply chain, reshoring fab capacities but causing hyper-inflation in GPU cloud clusters."
-    },
-    mathCalc: "CapEx Math: Building a new local semiconductor fab costs $20 Billion. Amortized over 5 years, that's $4B per year in depreciation alone before building {rand_val} chips."
-  },
-  {
-    category: "Real Estate",
-    headlineTemplate: "CRE Defaults Approach ${rand_val}B Benchmark in {country}",
-    shortTemplate: "Commercial office mortgages mature in a restrictive rate environment.",
-    jargon: "CMBS & Net Asset Value",
-    jargonDef: {
-      Beginner: "Owners of giant office buildings in {country} borrowed money when it was cheap. Now their loans are due, and borrowing is too expensive.",
-      Intermediate: "Commercial Mortgage-Backed Securities (CMBS) are failing to refinance as office vacancy rates surge and capitalization (cap) rates expand.",
-      Expert: "A systemic maturity wall approaches for non-recourse CRE loans. Expanding cap rates mechanically crush Net Asset Value (NAV), pushing LTV ratios above 100%."
-    },
-    mathCalc: "Valuation Crash: An office building generates $5M a year in rent. At a 5% Cap Rate, it's worth $100M. If interest rates rise and the Cap Rate hits {rand_rate}%, its value crashes severely."
-  },
-  {
-    category: "Crypto & Web3",
-    headlineTemplate: "{country} Finalizes Smart Contract Audits for Phase {rand_q}",
-    shortTemplate: "Legislative clarity accelerates the tokenization of real world assets.",
-    jargon: "Tokenization & Settlement",
-    jargonDef: {
-      Beginner: "The government in {country} made rules for digital money, making it safe and legal for big companies to start using it.",
-      Intermediate: "Clear regulatory frameworks allow legacy financial institutions to tokenize Real World Assets (RWAs) like real estate onto blockchain ledgers.",
-      Expert: "Bridging traditional TradFi plumbing with decentralized protocols enables atomic settlement of tokenized securities, slashing counterparty delivery risk."
-    },
-    mathCalc: "Capital Efficiency: Traditional settlement takes 48 hours, locking up $100M in margin capital. Blockchain settlement takes {rand_val} seconds. This frees capital to generate yield elsewhere."
-  }
-];
-
-// Helper functions for seeded randomness
-const hashString = (str: string) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-};
-
-const seededRandom = (seed: number) => {
-  const m = 2 ** 35 - 31;
-  let s = seed % m;
-  return function () {
-    return (s = (s * 185852) % m) / m;
-  };
-};
-
 type NewsItem = {
-  id: number;
+  id: string;
   category: string;
   time: string;
   headline: string;
   short: string;
-  jargon: string;
-  jargonDef: string;
-  mathCalc: string;
+  source: string;
 };
+
+// AI Parsing Engine operating directly on LIVE headlines
+function extractAIAnalysis(headline: string, level: string) {
+   const lower = headline.toLowerCase();
+   
+   if (lower.includes("rate") || lower.includes("bank") || lower.includes("fed") || lower.includes("yield") || lower.includes("inflation")) {
+     return {
+       jargon: "Interest Rates & Monetary Supply",
+       jargonDef: level === "Beginner" ? "Central banks change how much it costs to borrow money. When it costs more, people buy less, which cools down prices." : 
+                  level === "Intermediate" ? "Central banks adjust the overnight lending rate to cool inflation or stimulate borrowing, directly impacting sovereign bond yields." :
+                  "Hawkish tightening contracts M2 money supply, heavily steepening real yields and compressing the equity risk premium.",
+       mathCalc: `Bond Math: If the central bank raises rates by 0.25%, a 10-year bond's value drops mechanically by roughly 2.5% (assuming duration = 10). A $10,000,000 treasury portfolio loses $250,000 in paper value instantly.`
+     };
+   }
+   
+   if (lower.includes("stock") || lower.includes("apple") || lower.includes("earnings") || lower.includes("dividend") || lower.includes("revenue") || lower.includes("market")) {
+     return {
+       jargon: "P/E Expansion & EPS",
+       jargonDef: level === "Beginner" ? "When a company makes more money than experts guessed, more people want to buy its shares, so the stock price goes up rapidly." :
+                  level === "Intermediate" ? "A positive EPS surprise forces automated algorithmic buying, which pushes the underlying stock's valuation multiples higher." :
+                  "Earnings beats compress the forward P/E ratio, triggering massive options buying that forces market makers into delta-hedging (a systemic gamma squeeze).",
+       mathCalc: `Valuation Math: A company earning $5 per share at a P/E of 20 is worth $100. If earnings beat by $1, and euphoria pushes the P/E to 25, the stock rockets to $150 (a phenomenal 50% technical gain).`
+     };
+   }
+
+   if (lower.includes("oil") || lower.includes("gas") || lower.includes("gold") || lower.includes("energy") || lower.includes("copper")) {
+     return {
+       jargon: "Commodity Arbitrage & Spot Prices",
+       jargonDef: level === "Beginner" ? "When essential raw materials are harder to get, their prices immediately go up because global factories still need them urgently." :
+                  level === "Intermediate" ? "Commodity prices are driven heavily by supply shocks. Reductions in supply cause instant price spikes on the physical spot market." :
+                  "Supply inelasticity means minor inventory drawdowns create extreme front-month volatility and backwardation in the commodity futures curve.",
+       mathCalc: `Price Elasticity: If a country restricts 1 Million barrels of oil per day (a 1% global supply drop), and elasticity is -0.1, prices theoretically spike 10% upwards to clear the market.`
+     };
+   }
+   
+   if (lower.includes("crypto") || lower.includes("bitcoin") || lower.includes("sec") || lower.includes("token")) {
+     return {
+       jargon: "Decentralized Liquidity & Institutional Accumulation",
+       jargonDef: level === "Beginner" ? "Digital money systems move extremely fast. Big banks are starting to buy these assets, making them far more mainstream and valuable." :
+                  level === "Intermediate" ? "Institutional accumulation of digital assets creates supply shocks across centralized exchanges, driving intense price momentum." :
+                  "On-chain heuristics show massive outflows from exchange hot wallets to multi-sig cold storage, signaling high-timeframe institutional holding and supply constraints.",
+       mathCalc: `Liquidity Math: If exchanges hold 2M BTC and institutions sweep 100k BTC in a month, available trading supply drops by 5%. This geometric supply shock exponentially increases the price impact of every new marginal buyer.`
+     };
+   }
+
+   // Default Macro / Geopolitical / Business
+   return {
+       jargon: "Macroeconomic Volatility & Beta Repricing",
+       jargonDef: level === "Beginner" ? "Big global news makes investors nervous, so they move their money to safer places like cash or massive reliable corporations." :
+                  level === "Intermediate" ? "Geopolitical and macroeconomic shifts trigger broad market repricing as institutions adjust their risk exposure and pivot sectors." :
+                  "Idiosyncratic geopolitical risks elevate the VIX, forcing volatility-targeting quantitative funds to systematically de-leverage and aggressively sell risk-on assets.",
+       mathCalc: `Risk-Adjusted Return: If global volatility (VIX) doubles from 15 to 30, a portfolio with a Beta of 1.5 will see its expected daily price swings jump from 1.5% to 3.0%, demanding drastic risk-management protocols.`
+   };
+}
 
 export default function Page() {
   const [level, setLevel] = useState<"Beginner" | "Intermediate" | "Expert">("Intermediate");
   const [country, setCountry] = useState("Global Markets");
-  const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]); // Current Date State
+  const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeArticle, setActiveArticle] = useState<NewsItem | null>(null);
+  
+  const [realNews, setRealNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // 100-Node Programmable Generation utilizing Date + Country seed
-  const generatedNews = useMemo(() => {
-    const items: NewsItem[] = [];
-    const seedString = `${date}-${country}`;
-    const rand = seededRandom(hashString(seedString));
+  // Fetch LIVE News
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setRealNews([]);
     
-    let idAcc = 1;
-    for (let loop = 0; loop < 10; loop++) {
-      BASE_TEMPLATES.forEach((template, idx) => {
-        // Deterministic Pseudo-random variables based on the Date seed
-        const rv = rand(); // 0 to 1
-        const randFloat = (rv * 15 + 1).toFixed(1); // 1.0 to 16.0
-        const randInt = Math.floor(rv * 800) + 12; // 12 to 812
-        const drWord = rv > 0.5 ? "Surge" : "Plummet";
-        const drNoun = rv > 0.5 ? "Euphoria" : "Panic";
-        const qNum = Math.floor(rv * 4) + 1;
-
-        let headline = template.headlineTemplate
-            .replace("{country}", country === "Global Markets" ? "Global" : country)
-            .replace("{rand_val}", randInt.toString())
-            .replace("{rand_rate}", randFloat)
-            .replace("{dir_word}", drWord)
-            .replace("{dir_noun}", drNoun)
-            .replace("{rand_q}", qNum.toString());
-
-        let shortText = template.shortTemplate
-            .replace("{country}", country === "Global Markets" ? "Global" : country);
-            
-        let mathBody = template.mathCalc
-            .replace("{rand_val}", randInt.toString())
-            .replace("{rand_rate}", randFloat);
-
-        items.push({
-          id: idAcc++,
-          category: template.category,
-          time: `${Math.floor(rv * 55) + 1}m ago`,
-          headline: headline,
-          short: shortText,
-          jargon: template.jargon,
-          jargonDef: template.jargonDef[level],
-          mathCalc: mathBody
-        });
+    fetch(`/api/news?country=${encodeURIComponent(country === "Global Markets" ? "Global" : country)}&date=${date}`)
+      .then(res => res.json())
+      .then(data => {
+         if (!isMounted) return;
+         if(data.news) {
+            const categorized = data.news.map((item: any) => {
+               let cat = "Macro & Geopolitics";
+               const t = item.headline.toLowerCase();
+               if(t.includes('tech') || t.includes('ai') || t.includes('apple') || t.includes('microsoft') || t.includes('google')) cat = "Tech & AI";
+               else if(t.includes('oil') || t.includes('energy') || t.includes('gold') || t.includes('commodity') || t.includes('copper') || t.includes('climate')) cat = "Energy & Commodities";
+               else if(t.includes('crypto') || t.includes('bitcoin') || t.includes('sec') || t.includes('token') || t.includes('blockchain')) cat = "Crypto & Web3";
+               else if(t.includes('stock') || t.includes('market') || t.includes('share') || t.includes('fund') || t.includes('dividend') || t.includes('earnings') || t.includes('nasdaq')) cat = "Equities & Bonds";
+               
+               return { ...item, category: cat };
+            });
+            setRealNews(categorized);
+         }
+         setLoading(false);
+      })
+      .catch((err) => {
+         console.error(err);
+         if(isMounted) setLoading(false);
       });
-    }
+      return () => { isMounted = false; };
+  }, [country, date]);
 
-    // Shuffle the 100 array so the layout order changes entirely based on the Date!
-    for (let i = items.length - 1; i > 0; i--) {
-        const j = Math.floor(rand() * (i + 1));
-        [items[i], items[j]] = [items[j], items[i]];
-    }
-
-    return items;
-  }, [country, level, date]);
-
-  // Derive unique categories from generation
-  const uniqueCategories = Array.from(new Set(generatedNews.map(n => n.category)));
+  const uniqueCategories = Array.from(new Set(realNews.map(n => n.category)));
+  
+  // Real-Time Semantic Engine Evaluation
+  const aiData = activeArticle ? extractAIAnalysis(activeArticle.headline, level) : null;
 
   return (
     <div className="bg-[#131315] min-h-screen text-[#e5e1e4] font-sans selection:bg-[#d97a53] selection:text-white">
@@ -279,7 +172,7 @@ export default function Page() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {activeArticle && (
+        {activeArticle && aiData && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
@@ -295,7 +188,7 @@ export default function Page() {
               <div className="flex items-center gap-3 mb-4 mt-2">
                 <span className="bg-[#5ed9ce]/20 text-[#5ed9ce] text-[10px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded">{activeArticle.category}</span>
                 <span className="text-[#a38c84] text-xs font-medium tracking-widest">{activeArticle.time}</span>
-                <span className="text-[#d97a53] text-xs font-bold uppercase tracking-widest ml-auto mr-6 border border-[#d97a53]/30 px-2 py-1 rounded">Date: {date}</span>
+                <span className="text-[#d97a53] text-[10px] sm:text-xs font-bold uppercase tracking-widest ml-auto mr-6 border border-[#d97a53]/30 px-2 py-1 rounded">Source: {activeArticle.source}</span>
               </div>
               
               <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-4 leading-tight">{activeArticle.headline}</h2>
@@ -305,15 +198,15 @@ export default function Page() {
                 <div className="bg-gradient-to-br from-white/10 to-transparent border border-white/5 p-6 rounded-2xl relative overflow-hidden group">
                   <div className="absolute top-0 left-0 w-1 h-full bg-[#5ed9ce]"></div>
                   <h3 className="flex items-center gap-2 text-[#5ed9ce] font-bold text-lg mb-3"><BookOpen size={18}/> AI Dictionary ({level})</h3>
-                  <p className="text-[#a38c84] text-xs uppercase tracking-widest mb-2 font-bold opacity-50">Explaining: {activeArticle.jargon}</p>
-                  <p className="text-[#dbc1b8] text-sm leading-relaxed font-medium">{activeArticle.jargonDef}</p>
+                  <p className="text-[#a38c84] text-xs uppercase tracking-widest mb-2 font-bold opacity-50">Explaining: {aiData.jargon}</p>
+                  <p className="text-[#dbc1b8] text-sm leading-relaxed font-medium">{aiData.jargonDef}</p>
                 </div>
                 
                 <div className="bg-gradient-to-bl from-[#d97a53]/20 to-transparent border border-white/5 p-6 rounded-2xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-1 h-full bg-[#d97a53]"></div>
                   <h3 className="flex items-center gap-2 text-[#d97a53] font-bold text-lg mb-3"><Calculator size={18}/> Quant & Math Breakdown</h3>
                   <p className="text-[#a38c84] text-xs uppercase tracking-widest mb-2 font-bold opacity-50">Calculation Engine Direct Output</p>
-                  <p className="text-[#dbc1b8] text-sm leading-relaxed font-mono tracking-tight">{activeArticle.mathCalc}</p>
+                  <p className="text-[#dbc1b8] text-sm leading-relaxed font-mono tracking-tight">{aiData.mathCalc}</p>
                 </div>
               </div>
             </motion.div>
@@ -351,19 +244,18 @@ export default function Page() {
         <section className="text-center mb-16">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#533598]/20 border border-[#533598]/30 mb-8">
              <Sparkles size={14} className="text-[#d0bcff]" />
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#d0bcff]">100 Connected Nodes Active</span>
+             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#d0bcff]">LIVE RSS AGGREGATION ENGINE ACTIVE</span>
           </motion.div>
           
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="flex flex-col lg:flex-row items-center justify-center gap-4 bg-[#18181a] max-w-fit mx-auto p-2 rounded-[32px] border border-white/5 shadow-2xl flex-wrap">
             
-            {/* Calendar Seed Rotation */}
             <div className="relative flex items-center px-4 md:px-6 w-full lg:w-auto h-11 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5 cursor-pointer">
               <Calendar size={16} className="text-[#d97a53] mr-2" />
               <input 
                 type="date" 
                 value={date} 
                 onChange={(e) => setDate(e.target.value)}
-                title="Select Calendar Date to Rotate News Feeds"
+                title="Select Calendar Date to Fetch Live Data"
                 className="bg-transparent text-white font-bold text-xs sm:text-sm tracking-widest outline-none cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer w-full" 
               />
               <div className="absolute right-4 pointer-events-none text-[#d97a53] text-[10px]">SELECT</div>
@@ -371,7 +263,6 @@ export default function Page() {
 
             <div className="w-[1px] h-6 bg-white/10 hidden lg:block"></div>
 
-            {/* Literacy Matrix */}
             <div className="flex items-center gap-1 bg-black/40 rounded-[24px] p-1 h-11">
               <button onClick={() => setLevel("Beginner")} className={`px-4 sm:px-6 h-full rounded-[20px] text-[10px] font-black tracking-widest uppercase transition-all duration-300 ${level === "Beginner" ? "bg-[#d97a53] text-[#531900] shadow-lg shadow-[#d97a53]/20" : "text-[#a38c84] hover:text-white"}`}>Beginner</button>
               <button onClick={() => setLevel("Intermediate")} className={`px-4 sm:px-6 h-full rounded-[20px] text-[10px] font-black tracking-widest uppercase transition-all duration-300 ${level === "Intermediate" ? "bg-[#d97a53] text-[#531900] shadow-lg shadow-[#d97a53]/20" : "text-[#a38c84] hover:text-white"}`}>Intermediate</button>
@@ -380,7 +271,6 @@ export default function Page() {
 
             <div className="w-[1px] h-6 bg-white/10 hidden lg:block"></div>
 
-            {/* Country Matrix */}
             <div className="relative flex items-center px-4 md:px-6 w-full lg:w-auto h-11 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-[#d97a53]/20 cursor-pointer">
               <Globe size={18} className="text-[#d97a53] mr-2" />
               <select 
@@ -396,42 +286,55 @@ export default function Page() {
           </motion.div>
         </section>
 
-        <div className="space-y-16 mt-16">
-          {uniqueCategories.map((categoryName) => {
-            const categoryItems = generatedNews.filter(n => n.category === categoryName);
-            if (categoryItems.length === 0) return null;
+        {loading ? (
+            <div className="flex flex-col items-center justify-center py-32 opacity-70">
+               <div className="w-16 h-16 border-4 border-[#d97a53]/30 border-t-[#d97a53] rounded-full animate-spin mb-6"></div>
+               <span className="text-[#d97a53] font-black uppercase tracking-[0.3em] animate-pulse">Initializing Global Node Web...</span>
+               <span className="text-[#a38c84] text-xs mt-3 uppercase tracking-widest font-mono">Fetching Live Feeds for {country === "Global Markets" ? "the Globe" : country} via RSS Proxy</span>
+            </div>
+        ) : realNews.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-32 opacity-50 text-center">
+               <span className="text-[#a38c84] font-bold uppercase tracking-[0.2em] mb-2">No LIVE Data Signals Found</span>
+               <span className="text-white/40 text-sm">Attempting to parse historical RSS feeds resulted in empty streams for this region/date. Try another permutation.</span>
+            </div>
+        ) : (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-16 mt-8">
+            {uniqueCategories.map((categoryName) => {
+              const categoryItems = realNews.filter(n => n.category === categoryName);
+              if (categoryItems.length === 0) return null;
 
-            return (
-              <section key={categoryName} className="relative z-10 w-full">
-                <div className="flex items-center gap-4 mb-6">
-                  <h2 className="text-sm border border-white/10 px-4 py-1.5 rounded-full bg-white/5 font-bold text-white tracking-widest uppercase">{categoryName}</h2>
-                  <div className="flex-1 h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
-                  <span className="text-[10px] font-mono text-[#a38c84]">{categoryItems.length} active nodes</span>
-                </div>
-                
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-                  {categoryItems.map((item, i) => (
-                    <motion.div 
-                      key={item.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.2, delay: (Math.min(i, 10) * 0.03) }}
-                      onClick={() => setActiveArticle(item)}
-                      className="bg-[#1c1b1d]/80 backdrop-blur-md p-4 rounded-xl border border-white/5 hover:border-[#d97a53]/50 hover:bg-[#252326] cursor-pointer group transition-all flex flex-col h-full shadow-lg"
-                    >
-                      <div className="flex justify-between items-start mb-3">
-                        <span className="text-[9px] font-mono font-bold text-[#a38c84] bg-white/5 px-2 py-0.5 rounded">{item.time}</span>
-                        <BookOpen size={14} className="text-[#5ed9ce] opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                      <h4 className="text-xs font-bold text-white leading-tight mb-2 group-hover:text-[#ffb599] transition-colors line-clamp-3">{item.headline}</h4>
-                      <p className="text-[10px] mt-auto pt-3 text-[#dbc1b8] opacity-60 line-clamp-2 leading-relaxed">{item.short}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
+              return (
+                <section key={categoryName} className="relative z-10 w-full">
+                  <div className="flex items-center gap-4 mb-6">
+                    <h2 className="text-sm border border-white/10 px-4 py-1.5 rounded-full bg-white/5 font-bold text-white tracking-widest uppercase">{categoryName}</h2>
+                    <div className="flex-1 h-[1px] bg-gradient-to-r from-white/10 to-transparent"></div>
+                    <span className="text-[10px] font-mono text-[#a38c84]">{categoryItems.length} live nodes</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+                    {categoryItems.map((item, i) => (
+                      <motion.div 
+                        key={item.id}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.2, delay: (Math.min(i, 10) * 0.03) }}
+                        onClick={() => setActiveArticle(item)}
+                        className="bg-[#1c1b1d]/80 backdrop-blur-md p-4 rounded-xl border border-white/5 hover:border-[#d97a53]/50 hover:bg-[#252326] cursor-pointer group transition-all flex flex-col h-full shadow-lg"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <span className="text-[9px] font-mono font-bold text-[#a38c84] bg-white/5 px-2 py-0.5 rounded">{item.time}</span>
+                          <BookOpen size={14} className="text-[#5ed9ce] opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <h4 className="text-xs font-bold text-white leading-tight mb-2 group-hover:text-[#ffb599] transition-colors line-clamp-3">{item.headline}</h4>
+                        <p className="text-[10px] mt-auto pt-3 text-[#dbc1b8] opacity-60 line-clamp-1 leading-relaxed capitalize">{item.source}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </motion.div>
+        )}
       </main>
 
       <section className="py-12 border-y border-white/5 bg-[#0a0a0c] relative overflow-hidden flex flex-col items-center">
