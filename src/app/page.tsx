@@ -4,41 +4,18 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="w-full py-5 px-8 border-b border-gray-200 bg-white shadow-sm flex items-center justify-between sticky top-0 z-50">
-        
-        {/* Left: Country Selector */}
-        <div className="flex-1 flex justify-start">
-          <div className="relative cursor-pointer">
-            <select className="appearance-none bg-[#f7f5f2] border border-gray-300 text-[#4a2b8e] py-2 pl-4 pr-10 rounded-full font-bold focus:outline-none focus:ring-2 focus:ring-[#d97a53] cursor-pointer hover:bg-gray-100 transition-colors">
-              <option value="TR">🇹🇷 Türkiye</option>
-              <option value="US">🇺🇸 United States</option>
-              <option value="UK">🇬🇧 United Kingdom</option>
-              <option value="DE">🇩🇪 Germany</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#4a2b8e]">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+      <header className="w-full py-6 px-8 border-b border-gray-100 bg-white/80 backdrop-blur-md shadow-sm flex items-center justify-center sticky top-0 z-50">
+        {/* Center: Minimalist Logo */}
+        <a href="#" className="flex items-center justify-center gap-3 group">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform group-hover:scale-105 transition-transform shadow-md rounded-[10px]">
+                <rect width="40" height="40" rx="10" fill="#1b1b1b" />
+                <path d="M12 28V12L28 28V12" stroke="#d97a53" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="28" cy="12" r="3" fill="#d97a53" />
+            </svg>
+            <div className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
+                Nis Finance <span style={{ color: '#d97a53' }}>Co.</span>
             </div>
-          </div>
-        </div>
-
-        {/* Center: Logo */}
-        <div className="flex-1 flex justify-center items-center gap-3">
-            <Image src="/logo.png" alt="FinAI News Logo" width={48} height={48} className="object-contain" />
-            <div className="text-3xl font-extrabold tracking-tighter" style={{ color: '#d97a53' }}>
-                Fin<span style={{ color: '#4a2b8e' }}>AI</span>
-                <span className="hidden sm:inline-block text-gray-900 border-l-2 border-gray-300 ml-2 pl-2 text-xl font-medium tracking-normal">News</span>
-            </div>
-        </div>
-
-        {/* Right: Auth / Membership */}
-        <div className="flex-1 flex justify-end gap-3">
-          <button className="hidden md:inline-block px-5 py-2 text-[#4a2b8e] font-bold hover:bg-gray-100 rounded-full transition-colors">
-            Giriş Yap
-          </button>
-          <button className="px-6 py-2 bg-[#d97a53] text-white font-bold rounded-full shadow-md shadow-[#d97a53]/30 hover:scale-105 transition-transform hover:shadow-lg">
-            Üye Ol (Premium)
-          </button>
-        </div>
+        </a>
       </header>
 
       {/* Main Content Area */}
