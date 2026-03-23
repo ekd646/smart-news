@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Calendar } from "lucide-react";
+import { supabase } from '../lib/supabaseClient';
 
 const TOP_COUNTRIES = [
   "Global Markets", "United States", "China", "Japan", "Germany", "India", "United Kingdom", "France", "Italy", "Canada", "Brazil", 
@@ -82,6 +83,10 @@ export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"login" | "signup" | "premium" | "privacy" | "terms" | "cookie">("premium");
   const [activeArticle, setActiveArticle] = useState<NewsItem | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState<any>(null);
   
   const [realNews, setRealNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -170,11 +175,19 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Welcome Back</h2>
                   <p className="text-[#dbc1b8] text-center mb-6 text-sm">Sign in to Nis Finance Co. to continue.</p>
                   <div className="space-y-4 mb-6">
-                    <input type="email" placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
-                    <input type="password" placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
                   </div>
-                  <button className="w-full py-3 bg-white text-[#131315] font-black uppercase tracking-widest rounded-lg shadow-lg hover:bg-gray-200 transition-colors mb-4">
-                    Sign In
+                  <button disabled={isSubmitting} onClick={async () => {
+                     setIsSubmitting(true);
+                     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                     setIsSubmitting(false);
+                     if (error) { alert(error.message); return; }
+                     setUser(data.user);
+                     setIsModalOpen(false);
+                     setEmail(''); setPassword('');
+                  }} className="w-full py-3 bg-white text-[#131315] font-black uppercase tracking-widest rounded-lg shadow-lg hover:bg-gray-200 transition-colors mb-4 disabled:opacity-50">
+                    {isSubmitting ? 'Verifying...' : 'Sign In'}
                   </button>
                   <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Don't have an account? <span onClick={() => setModalMode("signup")} className="text-[#d97a53] cursor-pointer hover:underline font-bold">Create one</span></p>
                 </div>
@@ -185,15 +198,20 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Create Account</h2>
                   <p className="text-[#dbc1b8] text-center mb-6 text-sm">Join Nis Finance Co. for elite market access.</p>
                   <div className="space-y-4 mb-6">
-                    <div className="flex gap-4">
-                      <input type="text" placeholder="First Name" className="w-1/2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
-                      <input type="text" placeholder="Last Name" className="w-1/2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
-                    </div>
-                    <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
-                    <input type="password" placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
                   </div>
-                  <button className="w-full py-3 bg-[#d97a53] text-[#531900] font-black uppercase tracking-widest rounded-lg shadow-lg hover:opacity-90 transition-opacity mb-4 border border-[#531900]/20">
-                    Create Account
+                  <button disabled={isSubmitting} onClick={async () => {
+                     if(!email || !password) return;
+                     setIsSubmitting(true);
+                     const { error } = await supabase.auth.signUp({ email, password });
+                     setIsSubmitting(false);
+                     if (error) { alert(error.message); return; }
+                     alert('Success! Check your email for authentication link.');
+                     setModalMode('login');
+                     setPassword('');
+                  }} className="w-full py-3 bg-[#d97a53] text-[#531900] font-black uppercase tracking-widest rounded-lg shadow-lg hover:opacity-90 transition-opacity mb-4 border border-[#531900]/20 disabled:opacity-50">
+                    {isSubmitting ? 'Registering...' : 'Create Account'}
                   </button>
                   <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Already a member? <span onClick={() => setModalMode("login")} className="text-[#d97a53] cursor-pointer hover:underline font-bold">Sign In</span></p>
                 </div>
@@ -330,9 +348,19 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-4 mb-5 border-b border-white/10 pb-4 px-12">
-          <button onClick={() => { setModalMode("login"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Login</button>
-          <div className="w-1 h-1 bg-white/20 rounded-full"></div>
-          <button onClick={() => { setModalMode("signup"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Up</button>
+          {user ? (
+            <>
+              <span className="text-white text-xs font-bold uppercase tracking-widest hidden sm:inline-block">{user.email?.split('@')[0]}</span>
+              <div className="w-1 h-1 bg-white/20 rounded-full hidden sm:block"></div>
+              <button onClick={async () => { await supabase.auth.signOut(); setUser(null); }} className="text-[#d97a53] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Out</button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => { setModalMode("login"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Login</button>
+              <div className="w-1 h-1 bg-white/20 rounded-full"></div>
+              <button onClick={() => { setModalMode("signup"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Up</button>
+            </>
+          )}
           <div className="w-1 h-1 bg-white/20 rounded-full"></div>
           <button onClick={() => { setModalMode("premium"); setIsModalOpen(true); }} className="bg-[#d97a53] text-[#531900] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Premium</button>
         </div>
