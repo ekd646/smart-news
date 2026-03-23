@@ -144,7 +144,18 @@ export default function Page() {
               {modalMode === "premium" && (
                 <div className="animate-fade-in-up">
                   <div className="flex justify-center mb-6">
-                     <img src="/logo.png" alt="Terminal Access" className="w-16 h-16 rounded-[10px] shadow-2xl drop-shadow-[0_0_20px_rgba(217,122,83,0.3)] object-contain" />
+                     <svg width="56" height="56" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-[0_0_20px_rgba(217,122,83,0.4)]">
+                        <defs>
+                          <linearGradient id="finCoreModal" x1="0" y1="0" x2="100" y2="100">
+                            <stop offset="0%" stopColor="#ffb599" />
+                            <stop offset="100%" stopColor="#d97a53" />
+                          </linearGradient>
+                        </defs>
+                        <path d="M50 5 L85 50 L50 95 L15 50 Z" fill="url(#finCoreModal)" opacity="0.2" />
+                        <path d="M50 15 L75 50 L50 85 L25 50 Z" fill="url(#finCoreModal)" />
+                        <path d="M50 15 L50 85 L25 50 Z" fill="#000000" opacity="0.2" />
+                        <path d="M50 15 L75 50 L50 50 Z" fill="#ffffff" opacity="0.3" />
+                     </svg>
                   </div>
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2">Upgrade to <span className="text-[#d97a53]">Terminal</span></h2>
                   <p className="text-[#dbc1b8] text-center mb-8 text-sm">Gain access to Level 3 institutional order flow data, unlimited AI summaries, and real-time alerts.</p>
@@ -252,7 +263,18 @@ export default function Page() {
         className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center justify-center pt-6 pb-6 bg-gradient-to-b from-[#131315] via-[#131315]/90 to-transparent backdrop-blur-md"
       >
         <div className="flex items-center gap-3 cursor-pointer mb-5 group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/logo.png" alt="Nis Finance Logo" className="w-12 h-12 rounded-xl shadow-2xl drop-shadow-[0_0_15px_rgba(217,122,83,0.3)] transform group-hover:scale-105 transition-transform" />
+          <svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="transform group-hover:scale-110 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(217,122,83,0.3)]">
+            <defs>
+              <linearGradient id="finCore" x1="0" y1="0" x2="100" y2="100">
+                <stop offset="0%" stopColor="#ffb599" />
+                <stop offset="100%" stopColor="#d97a53" />
+              </linearGradient>
+            </defs>
+            <path d="M50 5 L85 50 L50 95 L15 50 Z" fill="url(#finCore)" opacity="0.2" />
+            <path d="M50 15 L75 50 L50 85 L25 50 Z" fill="url(#finCore)" />
+            <path d="M50 15 L50 85 L25 50 Z" fill="#000000" opacity="0.2" />
+            <path d="M50 15 L75 50 L50 50 Z" fill="#ffffff" opacity="0.3" />
+          </svg>
           <div className="flex flex-col">
             <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Nis Finance <span className="text-[#d97a53]">Co.</span></span>
             <span className="text-[9px] font-bold tracking-[0.4em] text-[#d97a53] uppercase leading-none mt-1">Intelligence Division</span>
