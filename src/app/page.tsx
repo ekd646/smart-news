@@ -80,7 +80,7 @@ export default function Page() {
   const [country, setCountry] = useState("Global Markets");
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<"login" | "signup" | "premium">("premium");
+  const [modalMode, setModalMode] = useState<"login" | "signup" | "premium" | "privacy" | "terms" | "cookie">("premium");
   const [activeArticle, setActiveArticle] = useState<NewsItem | null>(null);
   
   const [realNews, setRealNews] = useState<NewsItem[]>([]);
@@ -196,6 +196,54 @@ export default function Page() {
                     Create Account
                   </button>
                   <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Already a member? <span onClick={() => setModalMode("login")} className="text-[#d97a53] cursor-pointer hover:underline font-bold">Sign In</span></p>
+                </div>
+              )}
+
+              {modalMode === "privacy" && (
+                <div className="animate-fade-in-up max-h-[60vh] overflow-y-auto pr-4 scrollbar-hide">
+                  <h2 className="text-3xl font-extrabold text-white mb-6">Privacy Policy</h2>
+                  <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
+                    <p><strong>Last Updated: March 2026</strong></p>
+                    <p>At Nis Finance Co., we are committed to protecting your privacy and ensuring the security of your personal data. This Privacy Policy outlines how we collect, use, and safeguard your information.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Information We Collect</h3>
+                    <p>We collect information you provide directly to us when creating an account, including your name, email address, and professional title. We also collect automated telemetry data to improve our latency and model accuracy.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. How We Use Information</h3>
+                    <p>Your data is strictly utilized to authenticate access to the Terminal, compute aggregated analytic reports, and ensure compliance with global financial regulations. We never sell raw user data to third-party ad networks.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">3. Data Security</h3>
+                    <p>All institutional data flows are encrypted via AES-256 standard and shielded by Cloudflare Enterprise. Biometric access controls govern our physical datacenters.</p>
+                  </div>
+                </div>
+              )}
+
+              {modalMode === "terms" && (
+                <div className="animate-fade-in-up max-h-[60vh] overflow-y-auto pr-4 scrollbar-hide">
+                  <h2 className="text-3xl font-extrabold text-white mb-6">Terms of Service</h2>
+                  <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
+                    <p><strong>Effective Date: March 2026</strong></p>
+                    <p>By accessing the Nis Finance Co. platform and our proprietary Market Intelligence nodes, you agree to be bound by these Terms of Service.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Use of Services</h3>
+                    <p>The algorithmic predictions and macro-economic data provided are for informational purposes only. You agree not to reverse-engineer our proprietary AI nodes or scrape the live RSS aggregation feeds.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. Subscription and Billing</h3>
+                    <p>Terminal access is billed on a monthly or annual cycle. Failure to settle invoices will result in immediate suspension of API access and Level 3 data feeds.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">3. Limitation of Liability</h3>
+                    <p>Nis Finance Co. shall not be held liable for any financial losses or trading liquidations arising from the use of our intelligence division insights.</p>
+                  </div>
+                </div>
+              )}
+
+              {modalMode === "cookie" && (
+                <div className="animate-fade-in-up max-h-[60vh] overflow-y-auto pr-4 scrollbar-hide">
+                  <h2 className="text-3xl font-extrabold text-white mb-6">Cookie Policy</h2>
+                  <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
+                    <p><strong>Effective Date: March 2026</strong></p>
+                    <p>Nis Finance Co. uses cookies and similar tracking technologies to track activity on our SaaS architecture and hold certain high-frequency information.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Essential Cookies</h3>
+                    <p>These are strictly necessary to provide you with services available through our Website and to use some of its features, such as secure login sessions.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. Analytic Cookies</h3>
+                    <p>We deploy telemetry cookies to calculate our platform's Time-to-First-Byte (TTFB) and dynamically balance server loads across global compute regions.</p>
+                    <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">3. Managing Cookies</h3>
+                    <p>You can instruct your browser to refuse all cookies. However, if you do not accept essential tracking, you may be disconnected from the live intelligence websocket.</p>
+                  </div>
                 </div>
               )}
 
@@ -410,9 +458,9 @@ export default function Page() {
 
       <motion.footer initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="pt-12 pb-24 border-t border-white/5 flex flex-col items-center justify-center gap-8 bg-[#131315]">
         <div className="flex items-center justify-center gap-8 text-xs font-bold text-[#a38c84] tracking-widest uppercase">
-          <a href="#" className="hover:text-[#ffb599] transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-[#ffb599] transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-[#ffb599] transition-colors">Cookie Policy</a>
+          <a onClick={() => { setModalMode("privacy"); setIsModalOpen(true); }} className="hover:text-[#ffb599] transition-colors cursor-pointer">Privacy Policy</a>
+          <a onClick={() => { setModalMode("terms"); setIsModalOpen(true); }} className="hover:text-[#ffb599] transition-colors cursor-pointer">Terms of Service</a>
+          <a onClick={() => { setModalMode("cookie"); setIsModalOpen(true); }} className="hover:text-[#ffb599] transition-colors cursor-pointer">Cookie Policy</a>
         </div>
         <div className="flex flex-col items-center gap-4">
             <span className="text-[10px] text-white/50 uppercase tracking-widest font-extrabold flex items-center gap-1"><ShieldCheck size={12}/> Global Secure Configurations</span>
