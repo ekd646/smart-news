@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
-  title: "Nis Finance Co. | AI-Powered Intelligence",
+  title: "Q&V Finance Co. | AI-Powered Intelligence",
   description: "Global Markets, Decoded by AI in Real-Time.",
 };
 

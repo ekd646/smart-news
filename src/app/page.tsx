@@ -173,7 +173,7 @@ export default function Page() {
               {modalMode === "login" && (
                 <div className="animate-fade-in-up">
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Welcome Back</h2>
-                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Sign in to Nis Finance Co. to continue.</p>
+                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Sign in to Q&V Finance Co. to continue.</p>
                   <div className="space-y-4 mb-6">
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
@@ -196,7 +196,7 @@ export default function Page() {
               {modalMode === "signup" && (
                 <div className="animate-fade-in-up">
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Create Account</h2>
-                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Join Nis Finance Co. for elite market access.</p>
+                  <p className="text-[#dbc1b8] text-center mb-6 text-sm">Join Q&V Finance Co. for elite market access.</p>
                   <div className="space-y-4 mb-6">
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#d97a53] transition-colors" />
@@ -222,7 +222,7 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white mb-6">Privacy Policy</h2>
                   <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
                     <p><strong>Last Updated: March 2026</strong></p>
-                    <p>At Nis Finance Co., we are committed to protecting your privacy and ensuring the security of your personal data. This Privacy Policy outlines how we collect, use, and safeguard your information.</p>
+                    <p>At Q&V Finance Co., we are committed to protecting your privacy and ensuring the security of your personal data. This Privacy Policy outlines how we collect, use, and safeguard your information.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Information We Collect</h3>
                     <p>We collect information you provide directly to us when creating an account, including your name, email address, and professional title. We also collect automated telemetry data to improve our latency and model accuracy.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. How We Use Information</h3>
@@ -238,13 +238,13 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white mb-6">Terms of Service</h2>
                   <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
                     <p><strong>Effective Date: March 2026</strong></p>
-                    <p>By accessing the Nis Finance Co. platform and our proprietary Market Intelligence nodes, you agree to be bound by these Terms of Service.</p>
+                    <p>By accessing the Q&V Finance Co. platform and our proprietary Market Intelligence nodes, you agree to be bound by these Terms of Service.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Use of Services</h3>
                     <p>The algorithmic predictions and macro-economic data provided are for informational purposes only. You agree not to reverse-engineer our proprietary AI nodes or scrape the live RSS aggregation feeds.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. Subscription and Billing</h3>
                     <p>Terminal access is billed on a monthly or annual cycle. Failure to settle invoices will result in immediate suspension of API access and Level 3 data feeds.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">3. Limitation of Liability</h3>
-                    <p>Nis Finance Co. shall not be held liable for any financial losses or trading liquidations arising from the use of our intelligence division insights.</p>
+                    <p>Q&V Finance Co. shall not be held liable for any financial losses or trading liquidations arising from the use of our intelligence division insights.</p>
                   </div>
                 </div>
               )}
@@ -254,7 +254,7 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white mb-6">Cookie Policy</h2>
                   <div className="space-y-4 text-sm text-[#dbc1b8] leading-relaxed">
                     <p><strong>Effective Date: March 2026</strong></p>
-                    <p>Nis Finance Co. uses cookies and similar tracking technologies to track activity on our SaaS architecture and hold certain high-frequency information.</p>
+                    <p>Q&V Finance Co. uses cookies and similar tracking technologies to track activity on our SaaS architecture and hold certain high-frequency information.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">1. Essential Cookies</h3>
                     <p>These are strictly necessary to provide you with services available through our Website and to use some of its features, such as secure login sessions.</p>
                     <h3 className="text-lg text-[#d97a53] font-bold mt-6 mb-2">2. Analytic Cookies</h3>
@@ -342,7 +342,7 @@ export default function Page() {
             <path d="M50 15 L75 50 L50 50 Z" fill="#ffffff" opacity="0.3" />
           </svg>
           <div className="flex flex-col">
-            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Nis Finance <span className="text-[#d97a53]">Co.</span></span>
+            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Q&V Finance <span className="text-[#d97a53]">Co.</span></span>
             <span className="text-[9px] font-bold tracking-[0.4em] text-[#d97a53] uppercase leading-none mt-1">Intelligence Division</span>
           </div>
         </div>
@@ -499,7 +499,7 @@ export default function Page() {
                <div className="text-white font-bold text-xs bg-black px-3 py-1.5 rounded border border-white/20"> Pay</div>
             </div>
         </div>
-        <div className="text-[#a38c84]/50 text-[10px]">© 2026 Nis Finance Co. All rights reserved. Architected for Scale.</div>
+        <div className="text-[#a38c84]/50 text-[10px]">© 2026 Q&V Finance Co. All rights reserved. Architected for Scale.</div>
       </motion.footer>
     </div>
   );
