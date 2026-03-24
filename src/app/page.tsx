@@ -174,7 +174,6 @@ export default function Page() {
     setChatFile(null);
     setChatFilePreview(null);
     setIsChatLoading(false);
-    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   };
 
   const [laws, setLaws] = useState<LawItem[]>([]);
@@ -557,7 +556,7 @@ export default function Page() {
                         type="text"
                         value={chatInput}
                         onChange={e => setChatInput(e.target.value)}
-                        onKeyDown={e => e.key === 'Enter' && sendChat()}
+                        onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); sendChat(); } }}
                         placeholder={`Ask a legal question about  ${country}...`}
                         className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#d97a53] transition-colors placeholder:text-[#a38c84]/50"
                         disabled={!isPremium && usageCount >= MAX_FREE_QUERIES}
@@ -623,13 +622,67 @@ export default function Page() {
       </main>
 
       {/* Footer */}
-      <motion.footer initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="border-t border-white/5 py-6 px-6 text-center space-y-3">
-        <div className="flex justify-center gap-6 text-[10px] font-bold uppercase tracking-widest">
+      <motion.footer initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="border-t border-white/5 py-10 px-6 max-w-5xl mx-auto">
+        {/* Payment Trust Logos */}
+        <div className="flex justify-center items-center gap-3 mb-6">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 font-medium mr-2">
+            <ShieldCheck size={14} className="text-[#5ed9ce]" /> Secure Payments
+          </div>
+          <div className="flex justify-center items-center gap-2 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100">
+            <div className="bg-white px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-300 h-6"><span className="text-[#142A7C] font-extrabold text-[11px] tracking-tighter">VISA</span></div>
+            <div className="bg-[#1A1F36] px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-600 h-6"><span className="text-[#635BFF] font-bold text-[11px]">stripe</span></div>
+            <div className="bg-white px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-300 h-6"><div className="flex"><div className="w-3 h-3 rounded-full bg-red-500/90 mix-blend-multiply relative left-1 z-10"></div><div className="w-3 h-3 rounded-full bg-yellow-500/90 mix-blend-multiply relative right-1"></div></div></div>
+            <div className="bg-black px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-700 h-6"><span className="text-white font-bold text-[11px]"> Pay</span></div>
+            <div className="bg-[#003087] px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-[#003087] h-6"><span className="text-[#009cde] font-bold text-[10px]">Pay</span><span className="text-[#012169] font-bold text-[10px]">Pal</span></div>
+          </div>
+        </div>
+
+        {/* Legal Compliance */}
+        <div className="border-t border-white/5 pt-6 mb-6">
+          <h4 className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-[#a38c84] mb-4">International E-Commerce Legal Compliance</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU GDPR</p>
+              <p className="text-[#a38c84]/60 text-[9px]">General Data Protection Regulation 2016/679</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">PSD2 / SCA</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Strong Customer Authentication for EU Payments</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU Consumer Rights</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Directive 2011/83 — 14-Day Withdrawal Right</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">DSA / DMA</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Digital Services Act & Digital Markets Act</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">ePrivacy</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Cookie Consent & Electronic Communications</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">AML / KYC</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Anti-Money Laundering Directive 6 (AMLD6)</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU VAT</p>
+              <p className="text-[#a38c84]/60 text-[9px]">One Stop Shop (OSS) Cross-Border VAT</p>
+            </div>
+            <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">KVKK (TR)</p>
+              <p className="text-[#a38c84]/60 text-[9px]">Kişisel Verilerin Korunması Kanunu No. 6698</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Nav Links */}
+        <div className="flex justify-center gap-6 text-[10px] font-bold uppercase tracking-widest mb-3">
           <button onClick={() => { setModalMode("privacy"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-white transition-all">Privacy</button>
           <button onClick={() => { setModalMode("terms"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-white transition-all">Terms</button>
           <button onClick={() => { setModalMode("cookie"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-white transition-all">Cookies</button>
         </div>
-        <div className="text-[#a38c84]/50 text-[10px]">© 2026 Pactum AI. All rights reserved. Contract Intelligence Platform.</div>
+        <div className="text-[#a38c84]/50 text-[10px] text-center">© 2026 Pactum AI. All rights reserved. Contract Intelligence Platform.</div>
       </motion.footer>
     </div>
   );
