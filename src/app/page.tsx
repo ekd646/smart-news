@@ -1,9 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Scale, Gavel, FileText } from "lucide-react";
+import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Scale, Gavel, FileText, Send, Paperclip, Image, MessageSquare, Lock } from "lucide-react";
 import { supabase } from '../lib/supabaseClient';
+
+type ChatMessage = {
+  role: 'user' | 'ai';
+  content: string;
+  fileName?: string;
+  fileType?: string;
+  filePreview?: string;
+};
 
 const COUNTRIES = [
   "Turkey", "Germany", "France", "United Kingdom", "Italy", "Spain", "Netherlands",
@@ -102,6 +110,72 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any>(null);
+
+  // AI Chat State
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatInput, setChatInput] = useState("");
+  const [chatFile, setChatFile] = useState<File | null>(null);
+  const [chatFilePreview, setChatFilePreview] = useState<string | null>(null);
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const [usageCount, setUsageCount] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const MAX_FREE_QUERIES = 3;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatEndRef = useRef<HTMLDivElement>(null);
+  const isPremium = false; // Will be connected to Stripe later
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setChatFile(f);
+    if (f.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (ev) => setChatFilePreview(ev.target?.result as string);
+      reader.readAsDataURL(f);
+    } else {
+      setChatFilePreview(null);
+    }
+  };
+
+  const sendChat = async () => {
+    if ((!chatInput.trim() && !chatFile) || isChatLoading) return;
+    if (!isPremium && usageCount >= MAX_FREE_QUERIES) {
+      setModalMode('premium');
+      setIsModalOpen(true);
+      return;
+    }
+
+    const userMsg: ChatMessage = {
+      role: 'user',
+      content: chatInput,
+      fileName: chatFile?.name,
+      fileType: chatFile?.type,
+      filePreview: chatFilePreview || undefined,
+    };
+    setChatMessages(prev => [...prev, userMsg]);
+    setChatInput('');
+    setIsChatLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('message', chatInput);
+      formData.append('country', country);
+      if (chatFile) formData.append('file', chatFile);
+
+      const res = await fetch('/api/chat', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      setChatMessages(prev => [...prev, { role: 'ai', content: data.analysis || 'Analysis could not be completed.' }]);
+      setUsageCount(prev => prev + 1);
+    } catch {
+      setChatMessages(prev => [...prev, { role: 'ai', content: '⚠️ Connection error. Please try again.' }]);
+    }
+
+    setChatFile(null);
+    setChatFilePreview(null);
+    setIsChatLoading(false);
+    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+  };
 
   const [laws, setLaws] = useState<LawItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -354,6 +428,148 @@ export default function Page() {
               </select>
               <div className="absolute right-4 pointer-events-none text-[#d97a53]">▾</div>
             </div>
+          </motion.div>
+        </section>
+
+        {/* AI Legal Chat */}
+        <section className="mb-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
+            <button onClick={() => setIsChatOpen(!isChatOpen)} className="w-full flex items-center justify-between bg-gradient-to-r from-[#d97a53]/10 to-[#1a3a5c]/10 border border-[#d97a53]/20 hover:border-[#d97a53]/40 rounded-2xl px-6 py-4 mb-4 transition-all group">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#d97a53] to-[#a85530] flex items-center justify-center shadow-lg shadow-[#d97a53]/20">
+                  <MessageSquare size={20} className="text-white" />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-white font-extrabold text-sm tracking-wide">AI Legal Assistant</h3>
+                  <p className="text-[#a38c84] text-[10px] tracking-widest uppercase">Upload contracts & ask legal questions — {country}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                {!isPremium && (
+                  <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded bg-white/5 border border-white/10 text-[#a38c84]">
+                    {Math.max(0, MAX_FREE_QUERIES - usageCount)}/{MAX_FREE_QUERIES} Free
+                  </span>
+                )}
+                <span className={`text-[#d97a53] text-xl transition-transform duration-300 ${isChatOpen ? 'rotate-180' : ''}`}>▾</span>
+              </div>
+            </button>
+
+            <AnimatePresence>
+              {isChatOpen && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                  <div className="bg-[#0f0f12] border border-white/10 rounded-2xl overflow-hidden">
+                    {/* Messages Area */}
+                    <div className="max-h-[400px] overflow-y-auto p-6 space-y-4 scrollbar-hide">
+                      {chatMessages.length === 0 && (
+                        <div className="text-center py-12">
+                          <Scale size={40} className="mx-auto mb-4 text-[#d97a53]/30" />
+                          <p className="text-[#a38c84] font-bold text-sm mb-1">Ask me anything about <span className="text-[#d97a53]">{country}</span> law</p>
+                          <p className="text-[#a38c84]/60 text-xs">Upload a contract, photo, or document for AI-powered legal analysis</p>
+                        </div>
+                      )}
+
+                      {chatMessages.map((msg, i) => (
+                        <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${msg.role === 'user' ? 'bg-[#d97a53] text-[#531900]' : 'bg-white/5 border border-white/10 text-[#e5e1e4]'}`}>
+                            {msg.filePreview && (
+                              <img src={msg.filePreview} alt="Upload" className="max-w-[200px] rounded-lg mb-2 border border-white/10" />
+                            )}
+                            {msg.fileName && !msg.filePreview && (
+                              <div className="flex items-center gap-2 bg-black/20 rounded-lg px-3 py-2 mb-2 text-xs">
+                                <FileText size={14} />
+                                <span className="font-bold truncate">{msg.fileName}</span>
+                              </div>
+                            )}
+                            {msg.content && (
+                              <div className={`text-sm leading-relaxed whitespace-pre-line ${msg.role === 'ai' ? 'font-mono text-xs' : 'font-bold'}`}>
+                                {msg.content.split('\n').map((line, li) => {
+                                  if (msg.role === 'ai') {
+                                    if (line.startsWith('###')) return <h4 key={li} className="text-[#d97a53] font-extrabold text-sm mt-3 mb-1 font-sans">{line.replace(/###\s?/g, '')}</h4>;
+                                    if (line.startsWith('**') && line.endsWith('**')) return <p key={li} className="text-white font-bold text-xs mt-2">{line.replace(/\*\*/g, '')}</p>;
+                                    if (line.startsWith('- ')) return <p key={li} className="text-[#5ed9ce] text-xs ml-2">• {line.slice(2)}</p>;
+                                    if (line.startsWith('⚠️') || line.startsWith('✅') || line.startsWith('📄') || line.startsWith('⚖️') || line.startsWith('📚') || line.startsWith('💡') || line.startsWith('🔍')) return <p key={li} className="text-sm font-sans mt-2">{line}</p>;
+                                    if (line.startsWith('>')) return <p key={li} className="text-[#a38c84] text-[10px] italic mt-3 border-l-2 border-[#d97a53]/30 pl-2">{line.slice(2)}</p>;
+                                  }
+                                  return <p key={li}>{line}</p>;
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+
+                      {isChatLoading && (
+                        <div className="flex justify-start">
+                          <div className="bg-white/5 border border-white/10 rounded-2xl px-5 py-3 flex items-center gap-2">
+                            <div className="flex gap-1">
+                              <div className="w-2 h-2 bg-[#d97a53] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                              <div className="w-2 h-2 bg-[#d97a53] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                              <div className="w-2 h-2 bg-[#d97a53] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                            </div>
+                            <span className="text-[#a38c84] text-xs font-bold">Analyzing under {country} law...</span>
+                          </div>
+                        </div>
+                      )}
+                      <div ref={chatEndRef} />
+                    </div>
+
+                    {/* Usage Limit Overlay */}
+                    {!isPremium && usageCount >= MAX_FREE_QUERIES && (
+                      <div className="px-6 py-4 bg-gradient-to-r from-[#d97a53]/10 to-transparent border-t border-[#d97a53]/20">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <Lock size={18} className="text-[#d97a53]" />
+                            <div>
+                              <p className="text-white font-bold text-sm">Free queries exhausted</p>
+                              <p className="text-[#a38c84] text-[10px]">Upgrade to Pro for unlimited AI legal analysis</p>
+                            </div>
+                          </div>
+                          <button onClick={() => { setModalMode('premium'); setIsModalOpen(true); }} className="bg-[#d97a53] text-[#531900] px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
+                            Upgrade
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* File Preview Bar */}
+                    {chatFile && (
+                      <div className="px-6 py-2 bg-white/5 border-t border-white/5 flex items-center gap-3">
+                        {chatFilePreview ? (
+                          <img src={chatFilePreview} alt="Preview" className="w-10 h-10 rounded-lg object-cover border border-white/10" />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-[#d97a53]/20 flex items-center justify-center"><FileText size={16} className="text-[#d97a53]" /></div>
+                        )}
+                        <span className="text-white text-xs font-bold truncate flex-1">{chatFile.name}</span>
+                        <button onClick={() => { setChatFile(null); setChatFilePreview(null); }} className="text-[#a38c84] hover:text-white"><X size={16} /></button>
+                      </div>
+                    )}
+
+                    {/* Input Bar */}
+                    <div className="flex items-center gap-2 p-4 border-t border-white/5">
+                      <input type="file" ref={fileInputRef} onChange={handleFileSelect} accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp" className="hidden" />
+                      <button onClick={() => fileInputRef.current?.click()} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#d97a53] transition-all" title="Upload Document">
+                        <Paperclip size={18} />
+                      </button>
+                      <button onClick={() => { const i = fileInputRef.current; if (i) { i.accept = 'image/*'; i.click(); i.accept = '.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp'; } }} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#d97a53] transition-all" title="Upload Photo">
+                        <Image size={18} />
+                      </button>
+                      <input
+                        type="text"
+                        value={chatInput}
+                        onChange={e => setChatInput(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && sendChat()}
+                        placeholder={`Ask a legal question about  ${country}...`}
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#d97a53] transition-colors placeholder:text-[#a38c84]/50"
+                        disabled={!isPremium && usageCount >= MAX_FREE_QUERIES}
+                      />
+                      <button onClick={sendChat} disabled={isChatLoading || (!isPremium && usageCount >= MAX_FREE_QUERIES)} className="w-10 h-10 rounded-xl bg-[#d97a53] hover:bg-[#c86a43] flex items-center justify-center text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-lg shadow-[#d97a53]/20">
+                        <Send size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </section>
 
