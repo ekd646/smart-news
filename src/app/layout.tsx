@@ -20,7 +20,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${manrope.variable} h-full antialiased dark`}
     >
-      <body className="min-h-screen bg-[#131315] text-[#e5e1e4] overflow-x-hidden selection:bg-[#d97a53] selection:text-white">
+      <body className="min-h-screen bg-[#131315] text-[#e5e1e4] overflow-x-hidden selection:bg-[#8B1A2B] selection:text-white">
         {children}
       </body>
     </html>
