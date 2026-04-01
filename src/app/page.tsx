@@ -235,10 +235,10 @@ export default function Page() {
 
 
       {/* Header */}
-      <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="fixed top-0 left-0 right-0 z-[100] flex flex-col items-center pt-6 pb-4 bg-gradient-to-b from-[#0a0a0c] via-[#0a0a0c]/95 to-transparent">
+      <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="fixed top-0 left-0 right-0 z-[100] flex flex-col items-center pt-6 pb-4 bg-gradient-to-b from-[#451c20] via-[#451c20]/95 to-transparent">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 flex items-center justify-center">
-            <img src="/republia-logo.png" alt="Republia" className="w-[180%] h-[180%] object-cover mix-blend-screen max-w-none" />
+            <img src="/republia-logo.png" alt="Republia" className="w-[180%] h-[180%] object-cover max-w-none" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl md:text-2xl font-black tracking-widest text-[#f2f2f2] uppercase font-sans leading-none">Republia<span className="text-[#db2d27]">.co</span></span>
