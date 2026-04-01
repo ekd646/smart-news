@@ -97,10 +97,10 @@ export default function Page() {
 
 
   return (
-    <div className="bg-[#0a0a0c] min-h-screen text-[#e5e1e4] font-sans selection:bg-[#8B1A2B] selection:text-white">
+    <div className="bg-[#0a0a0c] min-h-screen text-[#e5e1e4] font-sans selection:bg-[#7f2227] selection:text-white">
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden mix-blend-screen opacity-50">
-        <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[1000px] h-[600px] bg-[#8B1A2B]/20 blur-[160px] rounded-[100%]"></div>
-        <div className="absolute bottom-[-10%] left-[50%] -translate-x-1/2 w-[1200px] h-[800px] bg-[#8B1A2B]/10 blur-[200px] rounded-[100%]"></div>
+        <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[1000px] h-[600px] bg-[#7f2227]/20 blur-[160px] rounded-[100%]"></div>
+        <div className="absolute bottom-[-10%] left-[50%] -translate-x-1/2 w-[1200px] h-[800px] bg-[#7f2227]/10 blur-[200px] rounded-[100%]"></div>
       </div>
 
       {/* Modal System */}
@@ -113,17 +113,17 @@ export default function Page() {
               {modalMode === "enterprise" && (
                 <div className="animate-fade-in-up">
                   <div className="flex justify-center mb-6">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg shadow-[#8B1A2B]/20">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7f2227] to-[#451c20] flex items-center justify-center shadow-lg shadow-[#7f2227]/20">
                       <Building2 size={28} className="text-white" />
                     </div>
                   </div>
-                  <h2 className="text-3xl font-extrabold text-white text-center mb-2">Enterprise <span className="text-[#8B1A2B]">Access</span></h2>
+                  <h2 className="text-3xl font-extrabold text-white text-center mb-2">Enterprise <span className="text-[#7f2227]">Access</span></h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">This module is reserved for enterprise clients. Request a live demo to explore full capabilities.</p>
                   <div className="space-y-4 mb-6">
-                     <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
-                     <input type="text" placeholder="Company Name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
+                     <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
+                     <input type="text" placeholder="Company Name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
                   </div>
-                  <button onClick={() => {alert("Your request has been sent to our enterprise sales team. We will be in touch shortly."); setIsModalOpen(false);}} className="w-full py-3 bg-[#8B1A2B] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity">
+                  <button onClick={() => {alert("Your request has been sent to our enterprise sales team. We will be in touch shortly."); setIsModalOpen(false);}} className="w-full py-3 bg-[#7f2227] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity">
                     Book a Demo
                   </button>
                 </div>
@@ -134,8 +134,8 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Welcome Back</h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">Sign in to Republia to continue.</p>
                   <div className="space-y-4 mb-6">
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
                   </div>
                   <button disabled={isSubmitting} onClick={async () => {
                     setIsSubmitting(true);
@@ -148,7 +148,7 @@ export default function Page() {
                   }} className="w-full py-3 bg-white text-[#0f0f12] font-black uppercase tracking-widest rounded-lg shadow-lg hover:bg-gray-200 transition-colors mb-4 disabled:opacity-50">
                     {isSubmitting ? 'Verifying...' : 'Sign In'}
                   </button>
-                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Don't have an account? <span onClick={() => setModalMode("signup")} className="text-[#8B1A2B] cursor-pointer hover:underline font-bold">Create one</span></p>
+                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Don't have an account? <span onClick={() => setModalMode("signup")} className="text-[#7f2227] cursor-pointer hover:underline font-bold">Create one</span></p>
                 </div>
               )}
 
@@ -157,8 +157,8 @@ export default function Page() {
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Create Account</h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">Join Republia for AI-powered legal intelligence.</p>
                   <div className="space-y-4 mb-6">
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create Password" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#7f2227] transition-colors" />
                   </div>
                   <button disabled={isSubmitting} onClick={async () => {
                     if (!email || !password) return;
@@ -169,10 +169,10 @@ export default function Page() {
                     alert('Success! Check your email for authentication link.');
                     setModalMode('login');
                     setPassword('');
-                  }} className="w-full py-3 bg-[#8B1A2B] text-[#2D0A10] font-black uppercase tracking-widest rounded-lg shadow-lg hover:opacity-90 transition-opacity mb-4 disabled:opacity-50">
+                  }} className="w-full py-3 bg-[#7f2227] text-[#2D0A10] font-black uppercase tracking-widest rounded-lg shadow-lg hover:opacity-90 transition-opacity mb-4 disabled:opacity-50">
                     {isSubmitting ? 'Registering...' : 'Create Account'}
                   </button>
-                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Already a member? <span onClick={() => setModalMode("login")} className="text-[#8B1A2B] cursor-pointer hover:underline font-bold">Sign In</span></p>
+                  <p className="text-center text-xs text-[#a38c84] border-t border-white/10 pt-4">Already a member? <span onClick={() => setModalMode("login")} className="text-[#7f2227] cursor-pointer hover:underline font-bold">Sign In</span></p>
                 </div>
               )}
 
@@ -182,11 +182,11 @@ export default function Page() {
                   <div className="space-y-4 text-sm text-[#d4b5b8] leading-relaxed">
                     <p><strong>Last Updated: March 2026</strong></p>
                     <p>At Republia, we are committed to protecting your privacy and ensuring the security of your personal data. This Privacy Policy outlines how we collect, use, and safeguard your information in compliance with GDPR and applicable data protection laws.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">1. Information We Collect</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">1. Information We Collect</h3>
                     <p>We collect information you provide when creating an account, uploading contracts for analysis, or interacting with our AI legal assistant. Document data is processed in encrypted sandboxes and never stored permanently.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">2. How We Use Information</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">2. How We Use Information</h3>
                     <p>Your data is strictly utilized to authenticate access, deliver AI-powered legal analysis, and ensure compliance with multi-jurisdictional regulations. We never sell user data.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">3. Data Security</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">3. Data Security</h3>
                     <p>All document processing flows are encrypted via AES-256 and comply with EU GDPR Article 32 security requirements.</p>
                   </div>
                 </div>
@@ -198,11 +198,11 @@ export default function Page() {
                   <div className="space-y-4 text-sm text-[#d4b5b8] leading-relaxed">
                     <p><strong>Effective Date: March 2026</strong></p>
                     <p>By accessing the Republia platform, you agree to be bound by these Terms of Service.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">1. Use of Services</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">1. Use of Services</h3>
                     <p>Republia provides AI-assisted legal intelligence for informational purposes. It does not constitute legal advice. Always consult a licensed attorney for legal decisions.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">2. Subscription and Billing</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">2. Subscription and Billing</h3>
                     <p>Pro access is billed on a monthly or annual cycle. Free tier includes limited jurisdiction monitoring.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">3. Limitation of Liability</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">3. Limitation of Liability</h3>
                     <p>Republia shall not be held liable for any legal outcomes arising from reliance on AI-generated analysis.</p>
                   </div>
                 </div>
@@ -214,9 +214,9 @@ export default function Page() {
                   <div className="space-y-4 text-sm text-[#d4b5b8] leading-relaxed">
                     <p><strong>Effective Date: March 2026</strong></p>
                     <p>Republia uses cookies to maintain secure sessions and improve platform performance.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">1. Essential Cookies</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">1. Essential Cookies</h3>
                     <p>Required for authentication and secure document processing sessions.</p>
-                    <h3 className="text-lg text-[#8B1A2B] font-bold mt-6 mb-2">2. Analytics</h3>
+                    <h3 className="text-lg text-[#7f2227] font-bold mt-6 mb-2">2. Analytics</h3>
                     <p>We use anonymized analytics to optimize platform performance across jurisdictions.</p>
                   </div>
                 </div>
@@ -224,7 +224,7 @@ export default function Page() {
 
               <div className="mt-6 pt-4 text-center">
                 <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 mb-3 font-medium">
-                  <ShieldCheck size={14} className="text-[#5ed9ce]" /> GDPR Compliant & Encrypted
+                  <ShieldCheck size={14} className="text-[#db2d27]" /> GDPR Compliant & Encrypted
                 </div>
               </div>
             </motion.div>
@@ -241,8 +241,8 @@ export default function Page() {
             <img src="/republia-logo.png" alt="Republia" className="w-[180%] h-[180%] object-cover mix-blend-screen max-w-none" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Republia<span className="text-[#8B1A2B]">.co</span></span>
-            <span className="text-[9px] font-bold tracking-[0.4em] text-[#8B1A2B] uppercase leading-none mt-1">Enterprise AI Suite</span>
+            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Republia<span className="text-[#7f2227]">.co</span></span>
+            <span className="text-[9px] font-bold tracking-[0.4em] text-[#7f2227] uppercase leading-none mt-1">Enterprise AI Suite</span>
           </div>
         </div>
 
@@ -251,7 +251,7 @@ export default function Page() {
             <>
               <span className="text-white text-xs font-bold uppercase tracking-widest hidden sm:inline-block">{user.email?.split('@')[0]}</span>
               <div className="w-1 h-1 bg-white/20 rounded-full hidden sm:block"></div>
-              <button onClick={async () => { await supabase.auth.signOut(); setUser(null); }} className="text-[#8B1A2B] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Out</button>
+              <button onClick={async () => { await supabase.auth.signOut(); setUser(null); }} className="text-[#7f2227] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Out</button>
             </>
           ) : (
             <>
@@ -259,68 +259,68 @@ export default function Page() {
             </>
           )}
           <div className="w-1 h-1 bg-white/20 rounded-full"></div>
-          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Book A Demo</button>
+          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="bg-[#7f2227] text-[#2D0A10] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Book A Demo</button>
         </div>
 
         <div className="flex items-center gap-8 md:gap-16 font-sans tracking-widest font-bold text-[11px] md:text-xs uppercase">
-          <a onClick={(e) => { e.preventDefault(); document.getElementById('pricing')?.scrollIntoView({behavior:'smooth'});}} className="text-[#e8848f] hover:text-white transition-all duration-300 cursor-pointer">Enterprise Plans</a>
-          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#8B1A2B] transition-all duration-300 cursor-pointer">Request API</button>
+          <a onClick={(e) => { e.preventDefault(); document.getElementById('pricing')?.scrollIntoView({behavior:'smooth'});}} className="text-[#f2f2f2] hover:text-white transition-all duration-300 cursor-pointer">Enterprise Plans</a>
+          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#7f2227] transition-all duration-300 cursor-pointer">Request API</button>
         </div>
       </motion.header>
 
       {/* Main Content */}
       <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B1A2B]/10 border border-[#8B1A2B]/40 mb-6">
-            <Building2 size={14} className="text-[#8B1A2B]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B1A2B]">ENTERPRISE LEGAL SUITE</span>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7f2227]/10 border border-[#7f2227]/40 mb-6">
+            <Building2 size={14} className="text-[#7f2227]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7f2227]">ENTERPRISE LEGAL SUITE</span>
           </motion.div>
           
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">One Platform.<br/><span className="text-[#8B1A2B]">Total Legal Intelligence.</span></h1>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">One Platform.<br/><span className="text-[#7f2227]">Total Legal Intelligence.</span></h1>
           <p className="max-w-xl mx-auto text-[#a38c84] mb-12 text-sm sm:text-base leading-relaxed">Automate corporate workflows with military-grade encrypted AI. Analyze contracts, enforce compliance, and protect data privacy in seconds.</p>
           
           {/* APPS GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto text-left mb-16">
-            <div onClick={() => setActiveTool('contract')} className="bg-[#0f0f12] border border-[#8B1A2B]/30 hover:border-[#8B1A2B] rounded-2xl p-6 cursor-pointer transition-all group shadow-lg hover:shadow-[#8B1A2B]/10 hover:-translate-y-1">
-               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg mb-4 text-white"><FileText size={20} /></div>
+            <div onClick={() => setActiveTool('contract')} className="bg-[#0f0f12] border border-[#7f2227]/30 hover:border-[#7f2227] rounded-2xl p-6 cursor-pointer transition-all group shadow-lg hover:shadow-[#7f2227]/10 hover:-translate-y-1">
+               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#7f2227] to-[#451c20] flex items-center justify-center shadow-lg mb-4 text-white"><FileText size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">Contract Redliner</h3>
                <p className="text-sm text-[#a38c84]">Upload agreements. AI identifies hidden liabilities, missing clauses, and non-compliance flags instantly.</p>
-               <div className="mt-4 text-[#8B1A2B] text-xs font-bold uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">Launch Module <span>→</span></div>
+               <div className="mt-4 text-[#7f2227] text-xs font-bold uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">Launch Module <span>→</span></div>
             </div>
 
             <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><BookOpen size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">Fast Doc Generator</h3>
                <p className="text-sm text-[#a38c84]">Generate foolproof NDAs, Employment Contracts, and Service Agreements in seconds.</p>
-               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#db2d27]"/><span className="text-[#db2d27] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
             </div>
 
             <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><ShieldCheck size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">GDPR/KVKK Shield</h3>
                <p className="text-sm text-[#a38c84]">Scan your website terms, e-commerce policies, or apps for privacy law violations in real-time.</p>
-               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#db2d27]"/><span className="text-[#db2d27] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
             </div>
 
             <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><Languages size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">Legal Translator</h3>
                <p className="text-sm text-[#a38c84]">Translate official documents with precise legal terminology across 20+ EU jurisdictions perfectly.</p>
-               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#db2d27]"/><span className="text-[#db2d27] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
             </div>
 
             <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><Briefcase size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">Internal HR Chat (RAG)</h3>
                <p className="text-sm text-[#a38c84]">Train a private AI assistant purely on your corporate handbook to answer employee queries 24/7.</p>
-               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#db2d27]"/><span className="text-[#db2d27] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
             </div>
 
             <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><FileCheck size={20} /></div>
                <h3 className="text-lg font-bold text-white mb-2">Debt Recovery Bot</h3>
                <p className="text-sm text-[#a38c84]">Automate formal, legally-binding dunning letters and payment demands for late invoices.</p>
-               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#db2d27]"/><span className="text-[#db2d27] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
             </div>
           </div>
         </section>
@@ -329,10 +329,10 @@ export default function Page() {
         <AnimatePresence>
         {activeTool === 'contract' && (
         <section className="mb-12 max-w-4xl mx-auto" id="contract-analyzer">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="bg-[#0f0f12] border border-[#8B1A2B]/30 rounded-2xl overflow-hidden shadow-2xl shadow-[#8B1A2B]/10">
-            <div className="flex items-center justify-between bg-gradient-to-r from-[#8B1A2B]/10 to-[#1a3a5c]/10 border-b border-[#8B1A2B]/20 px-6 py-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="bg-[#0f0f12] border border-[#7f2227]/30 rounded-2xl overflow-hidden shadow-2xl shadow-[#7f2227]/10">
+            <div className="flex items-center justify-between bg-gradient-to-r from-[#7f2227]/10 to-[#0b4249]/10 border-b border-[#7f2227]/20 px-6 py-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg shadow-[#8B1A2B]/20">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7f2227] to-[#451c20] flex items-center justify-center shadow-lg shadow-[#7f2227]/20">
                   <MessageSquare size={20} className="text-white" />
                 </div>
                 <div className="text-left">
@@ -346,15 +346,15 @@ export default function Page() {
             <div className="max-h-[400px] overflow-y-auto p-6 space-y-4 scrollbar-hide">
               {chatMessages.length === 0 && (
                 <div className="text-center py-12">
-                  <Scale size={40} className="mx-auto mb-4 text-[#8B1A2B]/30" />
-                  <p className="text-[#a38c84] font-bold text-sm mb-1">Upload an agreement to analyze under <span className="text-[#8B1A2B]">{country}</span> law</p>
+                  <Scale size={40} className="mx-auto mb-4 text-[#7f2227]/30" />
+                  <p className="text-[#a38c84] font-bold text-sm mb-1">Upload an agreement to analyze under <span className="text-[#7f2227]">{country}</span> law</p>
                   <p className="text-[#a38c84]/60 text-xs text-balance">The AI will highlight hidden liabilities, map out key dates, and cross-reference with local compliance standards.</p>
                 </div>
               )}
 
                       {chatMessages.map((msg, i) => (
                         <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${msg.role === 'user' ? 'bg-[#8B1A2B] text-[#2D0A10]' : 'bg-white/5 border border-white/10 text-[#e5e1e4]'}`}>
+                          <div className={`max-w-[85%] rounded-2xl px-5 py-3 ${msg.role === 'user' ? 'bg-[#7f2227] text-[#2D0A10]' : 'bg-white/5 border border-white/10 text-[#e5e1e4]'}`}>
                             {msg.filePreview && (
                               <img src={msg.filePreview} alt="Upload" className="max-w-[200px] rounded-lg mb-2 border border-white/10" />
                             )}
@@ -368,11 +368,11 @@ export default function Page() {
                               <div className={`text-sm leading-relaxed whitespace-pre-line ${msg.role === 'ai' ? 'font-mono text-xs' : 'font-bold'}`}>
                                 {msg.content.split('\n').map((line, li) => {
                                   if (msg.role === 'ai') {
-                                    if (line.startsWith('###')) return <h4 key={li} className="text-[#8B1A2B] font-extrabold text-sm mt-3 mb-1 font-sans">{line.replace(/###\s?/g, '')}</h4>;
+                                    if (line.startsWith('###')) return <h4 key={li} className="text-[#7f2227] font-extrabold text-sm mt-3 mb-1 font-sans">{line.replace(/###\s?/g, '')}</h4>;
                                     if (line.startsWith('**') && line.endsWith('**')) return <p key={li} className="text-white font-bold text-xs mt-2">{line.replace(/\*\*/g, '')}</p>;
-                                    if (line.startsWith('- ')) return <p key={li} className="text-[#5ed9ce] text-xs ml-2">• {line.slice(2)}</p>;
+                                    if (line.startsWith('- ')) return <p key={li} className="text-[#db2d27] text-xs ml-2">• {line.slice(2)}</p>;
                                     if (line.startsWith('⚠️') || line.startsWith('✅') || line.startsWith('📄') || line.startsWith('⚖️') || line.startsWith('📚') || line.startsWith('💡') || line.startsWith('🔍')) return <p key={li} className="text-sm font-sans mt-2">{line}</p>;
-                                    if (line.startsWith('>')) return <p key={li} className="text-[#a38c84] text-[10px] italic mt-3 border-l-2 border-[#8B1A2B]/30 pl-2">{line.slice(2)}</p>;
+                                    if (line.startsWith('>')) return <p key={li} className="text-[#a38c84] text-[10px] italic mt-3 border-l-2 border-[#7f2227]/30 pl-2">{line.slice(2)}</p>;
                                   }
                                   return <p key={li}>{line}</p>;
                                 })}
@@ -386,9 +386,9 @@ export default function Page() {
                         <div className="flex justify-start">
                           <div className="bg-white/5 border border-white/10 rounded-2xl px-5 py-3 flex items-center gap-2">
                             <div className="flex gap-1">
-                              <div className="w-2 h-2 bg-[#8B1A2B] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                              <div className="w-2 h-2 bg-[#8B1A2B] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                              <div className="w-2 h-2 bg-[#8B1A2B] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                              <div className="w-2 h-2 bg-[#7f2227] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                              <div className="w-2 h-2 bg-[#7f2227] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                              <div className="w-2 h-2 bg-[#7f2227] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                             </div>
                             <span className="text-[#a38c84] text-xs font-bold">Analyzing under {country} law...</span>
                           </div>
@@ -399,16 +399,16 @@ export default function Page() {
 
                     {/* Usage Limit Overlay */}
                     {!isPremium && usageCount >= MAX_FREE_QUERIES && (
-                      <div className="px-6 py-4 bg-gradient-to-r from-[#8B1A2B]/10 to-transparent border-t border-[#8B1A2B]/20">
+                      <div className="px-6 py-4 bg-gradient-to-r from-[#7f2227]/10 to-transparent border-t border-[#7f2227]/20">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <Lock size={18} className="text-[#8B1A2B]" />
+                            <Lock size={18} className="text-[#7f2227]" />
                             <div>
                               <p className="text-white font-bold text-sm">Trial queries exhausted</p>
                               <p className="text-[#a38c84] text-[10px]">Contact sales to unlock your enterprise license</p>
                             </div>
                           </div>
-                          <button onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
+                          <button onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#7f2227] text-[#2D0A10] px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
                             Book Demo
                           </button>
                         </div>
@@ -421,7 +421,7 @@ export default function Page() {
                         {chatFilePreview ? (
                           <img src={chatFilePreview} alt="Preview" className="w-10 h-10 rounded-lg object-cover border border-white/10" />
                         ) : (
-                          <div className="w-10 h-10 rounded-lg bg-[#8B1A2B]/20 flex items-center justify-center"><FileText size={16} className="text-[#8B1A2B]" /></div>
+                          <div className="w-10 h-10 rounded-lg bg-[#7f2227]/20 flex items-center justify-center"><FileText size={16} className="text-[#7f2227]" /></div>
                         )}
                         <span className="text-white text-xs font-bold truncate flex-1">{chatFile.name}</span>
                         <button onClick={() => { setChatFile(null); setChatFilePreview(null); }} className="text-[#a38c84] hover:text-white"><X size={16} /></button>
@@ -431,10 +431,10 @@ export default function Page() {
                     {/* Input Bar */}
                     <div className="flex items-center gap-2 p-4 border-t border-white/5">
                       <input type="file" ref={fileInputRef} onChange={handleFileSelect} accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp" className="hidden" />
-                      <button onClick={() => fileInputRef.current?.click()} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#8B1A2B] transition-all" title="Upload Document">
+                      <button onClick={() => fileInputRef.current?.click()} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#7f2227] transition-all" title="Upload Document">
                         <Paperclip size={18} />
                       </button>
-                      <button onClick={() => { const i = fileInputRef.current; if (i) { i.accept = 'image/*'; i.click(); i.accept = '.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp'; } }} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#8B1A2B] transition-all" title="Upload Photo">
+                      <button onClick={() => { const i = fileInputRef.current; if (i) { i.accept = 'image/*'; i.click(); i.accept = '.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.webp'; } }} className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-[#a38c84] hover:text-[#7f2227] transition-all" title="Upload Photo">
                         <Image size={18} />
                       </button>
                       <input
@@ -443,10 +443,10 @@ export default function Page() {
                         onChange={e => setChatInput(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); sendChat(); } }}
                         placeholder={`Ask the engine to identify liabilities...`}
-                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#8B1A2B] transition-colors placeholder:text-[#a38c84]/50"
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#7f2227] transition-colors placeholder:text-[#a38c84]/50"
                         disabled={!isPremium && usageCount >= MAX_FREE_QUERIES}
                       />
-                      <button onClick={sendChat} disabled={isChatLoading || (!isPremium && usageCount >= MAX_FREE_QUERIES)} className="w-10 h-10 rounded-xl bg-[#8B1A2B] hover:bg-[#c86a43] flex items-center justify-center text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-lg shadow-[#8B1A2B]/20">
+                      <button onClick={sendChat} disabled={isChatLoading || (!isPremium && usageCount >= MAX_FREE_QUERIES)} className="w-10 h-10 rounded-xl bg-[#7f2227] hover:bg-[#c86a43] flex items-center justify-center text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-lg shadow-[#7f2227]/20">
                         <Send size={18} />
                       </button>
                     </div>
@@ -459,7 +459,7 @@ export default function Page() {
         {/* Enterprise AI Pricing Grid */}
         <section id="pricing" className="mt-20 pt-16 border-t border-white/5">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-black text-white tracking-tight mb-4">Enterprise <span className="text-[#8B1A2B]">AI Packages</span></h2>
+            <h2 className="text-3xl font-black text-white tracking-tight mb-4">Enterprise <span className="text-[#7f2227]">AI Packages</span></h2>
             <p className="text-[#a38c84] text-sm tracking-wide max-w-lg mx-auto">Scale your compliance engine. Dedicated clusters, custom LLM fine-tuning, and SLA guarantees for total corporate security.</p>
           </div>
 
@@ -470,26 +470,26 @@ export default function Page() {
               <p className="text-xs text-[#a38c84] mb-6">For boutique law firms and mid-sized legal departments.</p>
               <div className="text-4xl font-black text-white mb-8 tracking-tighter">€1,500<span className="text-sm font-bold text-[#a38c84] tracking-normal"> /mo</span></div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> 500 Contract Scans/mo</li>
-                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> EU & UK Jurisdictions</li>
-                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> Standard Encrypted Sandbox</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#db2d27]" /> 500 Contract Scans/mo</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#db2d27]" /> EU & UK Jurisdictions</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#db2d27]" /> Standard Encrypted Sandbox</li>
               </ul>
               <button className="w-full py-4 rounded-xl bg-white/5 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-colors">Select Plan</button>
             </div>
 
             {/* Scale Tier */}
-            <div className="bg-gradient-to-b from-[#8B1A2B]/20 to-[#0f0f12] border border-[#8B1A2B]/40 rounded-[32px] p-8 hover:border-[#8B1A2B] transition-all flex flex-col relative transform md:-translate-y-4 shadow-2xl shadow-[#8B1A2B]/10">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#8B1A2B] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-b-xl">Most Popular</div>
+            <div className="bg-gradient-to-b from-[#7f2227]/20 to-[#0f0f12] border border-[#7f2227]/40 rounded-[32px] p-8 hover:border-[#7f2227] transition-all flex flex-col relative transform md:-translate-y-4 shadow-2xl shadow-[#7f2227]/10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#7f2227] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-b-xl">Most Popular</div>
               <h3 className="text-xl font-bold text-white mb-2 mt-2">Enterprise Scale</h3>
               <p className="text-xs text-[#a38c84] mb-6">For multinational corporations requiring multi-language legal LLMs.</p>
               <div className="text-4xl font-black text-white mb-8 tracking-tighter">€4,000<span className="text-sm font-bold text-[#a38c84] tracking-normal"> /mo</span></div>
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Unlimited Contract Scans</li>
-                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Global Jurisdictions (50+ Countries)</li>
-                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> OCR & Multi-language Translation</li>
-                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Dedicated Account Manager</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#7f2227]" /> Unlimited Contract Scans</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#7f2227]" /> Global Jurisdictions (50+ Countries)</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#7f2227]" /> OCR & Multi-language Translation</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#7f2227]" /> Dedicated Account Manager</li>
               </ul>
-              <button className="w-full py-4 rounded-xl bg-[#8B1A2B] text-[#2D0A10] font-black uppercase tracking-widest text-xs shadow-lg hover:brightness-110 transition-all">Book Trial</button>
+              <button className="w-full py-4 rounded-xl bg-[#7f2227] text-[#2D0A10] font-black uppercase tracking-widest text-xs shadow-lg hover:brightness-110 transition-all">Book Trial</button>
             </div>
 
             {/* Custom Tier */}
@@ -516,35 +516,35 @@ export default function Page() {
           <h4 className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-[#a38c84] mb-4">International Corporate Legal Compliance</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU GDPR</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">EU GDPR</p>
               <p className="text-[#a38c84]/60 text-[9px]">General Data Protection Regulation 2016/679</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">PSD2 / SCA</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">PSD2 / SCA</p>
               <p className="text-[#a38c84]/60 text-[9px]">Strong Customer Authentication for EU Payments</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU Consumer Rights</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">EU Consumer Rights</p>
               <p className="text-[#a38c84]/60 text-[9px]">Directive 2011/83 — 14-Day Withdrawal Right</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">DSA / DMA</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">DSA / DMA</p>
               <p className="text-[#a38c84]/60 text-[9px]">Digital Services Act & Digital Markets Act</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">ePrivacy</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">ePrivacy</p>
               <p className="text-[#a38c84]/60 text-[9px]">Cookie Consent & Electronic Communications</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">AML / KYC</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">AML / KYC</p>
               <p className="text-[#a38c84]/60 text-[9px]">Anti-Money Laundering Directive 6 (AMLD6)</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU VAT</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">EU VAT</p>
               <p className="text-[#a38c84]/60 text-[9px]">One Stop Shop (OSS) Cross-Border VAT</p>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
-              <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">KVKK (TR)</p>
+              <p className="text-[#db2d27] font-bold text-[10px] uppercase tracking-widest mb-1">KVKK (TR)</p>
               <p className="text-[#a38c84]/60 text-[9px]">Kişisel Verilerin Korunması Kanunu No. 6698</p>
             </div>
           </div>
