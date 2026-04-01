@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Scale, Gavel, FileText, Send, Paperclip, Image, MessageSquare, Lock } from "lucide-react";
+import { Sparkles, Globe, X, BookOpen, Calculator, ShieldCheck, Scale, Gavel, FileText, Send, Paperclip, Image, MessageSquare, Lock, Building2, Languages, FileCheck, Briefcase } from "lucide-react";
 import { supabase } from '../lib/supabaseClient';
 
 type ChatMessage = {
@@ -104,8 +104,9 @@ function extractLegalAnalysis(headline: string) {
 export default function Page() {
   const [country, setCountry] = useState("Turkey");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState<"login" | "signup" | "premium" | "privacy" | "terms" | "cookie">("premium");
+  const [modalMode, setModalMode] = useState<"login" | "signup" | "enterprise" | "privacy" | "terms" | "cookie">("enterprise");
   const [activeLaw, setActiveLaw] = useState<LawItem | null>(null);
+  const [activeTool, setActiveTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,7 +141,7 @@ export default function Page() {
   const sendChat = async () => {
     if ((!chatInput.trim() && !chatFile) || isChatLoading) return;
     if (!isPremium && usageCount >= MAX_FREE_QUERIES) {
-      setModalMode('premium');
+      setModalMode('enterprise');
       setIsModalOpen(true);
       return;
     }
@@ -215,17 +216,21 @@ export default function Page() {
             <motion.div initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }} className="bg-[#0f0f12] border border-white/10 shadow-2xl rounded-2xl p-8 max-w-md w-full relative">
               <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
 
-              {modalMode === "premium" && (
+              {modalMode === "enterprise" && (
                 <div className="animate-fade-in-up">
                   <div className="flex justify-center mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg shadow-[#8B1A2B]/20">
-                      <Scale size={28} className="text-white" />
+                      <Building2 size={28} className="text-white" />
                     </div>
                   </div>
-                  <h2 className="text-3xl font-extrabold text-white text-center mb-2">Upgrade to <span className="text-[#8B1A2B]">Pro</span></h2>
-                  <p className="text-[#d4b5b8] text-center mb-8 text-sm">Unlock AI contract analysis, unlimited document scans, multi-jurisdiction comparisons, and priority legal alerts.</p>
-                  <button className="w-full py-3 bg-[#8B1A2B] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity">
-                    Start 14-Day Free Trial
+                  <h2 className="text-3xl font-extrabold text-white text-center mb-2">Enterprise <span className="text-[#8B1A2B]">Access</span></h2>
+                  <p className="text-[#d4b5b8] text-center mb-6 text-sm">This module is reserved for enterprise clients. Request a live demo to explore full capabilities.</p>
+                  <div className="space-y-4 mb-6">
+                     <input type="email" placeholder="Work Email" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
+                     <input type="text" placeholder="Company Name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white outline-none focus:border-[#8B1A2B] transition-colors" />
+                  </div>
+                  <button onClick={() => {alert("Your request has been sent to our enterprise sales team. We will be in touch shortly."); setIsModalOpen(false);}} className="w-full py-3 bg-[#8B1A2B] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity">
+                    Book a Demo
                   </button>
                 </div>
               )}
@@ -373,12 +378,12 @@ export default function Page() {
       {/* Header */}
       <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="fixed top-0 left-0 right-0 z-[100] flex flex-col items-center pt-6 pb-4 bg-gradient-to-b from-[#0a0a0c] via-[#0a0a0c]/95 to-transparent">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg shadow-[#8B1A2B]/20">
-            <Scale size={22} className="text-white" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img src="/republia-logo.png" alt="Republia" className="w-[180%] h-[180%] object-cover mix-blend-screen max-w-none" />
           </div>
           <div className="flex flex-col">
             <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">Republia<span className="text-[#8B1A2B]">.co</span></span>
-            <span className="text-[9px] font-bold tracking-[0.4em] text-[#8B1A2B] uppercase leading-none mt-1">Legal Intelligence</span>
+            <span className="text-[9px] font-bold tracking-[0.4em] text-[#8B1A2B] uppercase leading-none mt-1">Enterprise AI Suite</span>
           </div>
         </div>
 
@@ -391,31 +396,30 @@ export default function Page() {
             </>
           ) : (
             <>
-              <button onClick={() => { setModalMode("login"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Login</button>
-              <div className="w-1 h-1 bg-white/20 rounded-full"></div>
-              <button onClick={() => { setModalMode("signup"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Sign Up</button>
+              <button onClick={() => { setModalMode("login"); setIsModalOpen(true); }} className="text-[#a38c84] text-xs font-bold uppercase tracking-widest hover:text-white transition-all">Client Login</button>
             </>
           )}
           <div className="w-1 h-1 bg-white/20 rounded-full"></div>
-          <button onClick={() => { setModalMode("premium"); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Pro</button>
+          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-3 py-1 rounded-sm text-[10px] sm:text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform duration-200">Book A Demo</button>
         </div>
 
         <div className="flex items-center gap-8 md:gap-16 font-sans tracking-widest font-bold text-[11px] md:text-xs uppercase">
-          <a className="text-[#e8848f] hover:text-white transition-all duration-300 cursor-pointer">Legislation</a>
-          <a className="text-[#a38c84] hover:text-white transition-all duration-300 cursor-pointer">Contracts</a>
-          <button onClick={() => { setModalMode("premium"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#8B1A2B] transition-all duration-300 cursor-pointer">Analyzer</button>
+          <a onClick={(e) => { e.preventDefault(); document.getElementById('updates')?.scrollIntoView({behavior:'smooth'});}} className="text-[#e8848f] hover:text-white transition-all duration-300 cursor-pointer">Live Legislation</a>
+          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#8B1A2B] transition-all duration-300 cursor-pointer">Enterprise API</button>
         </div>
       </motion.header>
 
       {/* Main Content */}
       <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1a3a5c]/30 border border-[#1a3a5c]/40 mb-8">
-            <Gavel size={14} className="text-[#5ed9ce]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5ed9ce]">LIVE LEGAL INTELLIGENCE ENGINE</span>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1a3a5c]/30 border border-[#1a3a5c]/40 mb-6">
+            <Building2 size={14} className="text-[#5ed9ce]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5ed9ce]">ENTERPRISE LEGAL SUITE</span>
           </motion.div>
+          
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">One Platform.<br/><span className="text-[#8B1A2B]">Total Legal Intelligence.</span></h1>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="flex flex-col lg:flex-row items-center justify-center gap-4 bg-[#0f0f12] max-w-fit mx-auto p-2 rounded-[32px] border border-white/5 shadow-2xl flex-wrap">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-4 bg-[#0f0f12] max-w-fit mx-auto p-2 rounded-[32px] border border-white/5 shadow-2xl flex-wrap mb-12">
             <div className="relative flex items-center px-4 md:px-6 w-full lg:w-auto h-11 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-[#8B1A2B]/20 cursor-pointer">
               <Globe size={18} className="text-[#8B1A2B] mr-2" />
               <select
@@ -427,45 +431,80 @@ export default function Page() {
               </select>
               <div className="absolute right-4 pointer-events-none text-[#8B1A2B]">▾</div>
             </div>
-          </motion.div>
+          </div>
+          
+          {/* APPS GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto text-left mb-16">
+            <div onClick={() => setActiveTool('contract')} className="bg-[#0f0f12] border border-[#8B1A2B]/30 hover:border-[#8B1A2B] rounded-2xl p-6 cursor-pointer transition-all group shadow-lg hover:shadow-[#8B1A2B]/10 hover:-translate-y-1">
+               <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg mb-4 text-white"><FileText size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">Contract Redliner</h3>
+               <p className="text-sm text-[#a38c84]">Upload agreements. AI identifies hidden liabilities, missing clauses, and non-compliance flags instantly.</p>
+               <div className="mt-4 text-[#8B1A2B] text-xs font-bold uppercase tracking-widest flex items-center gap-1 group-hover:gap-2 transition-all">Launch Module <span>→</span></div>
+            </div>
+
+            <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
+               <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><BookOpen size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">Fast Doc Generator</h3>
+               <p className="text-sm text-[#a38c84]">Generate foolproof NDAs, Employment Contracts, and Service Agreements in seconds.</p>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+            </div>
+
+            <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
+               <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><ShieldCheck size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">GDPR/KVKK Shield</h3>
+               <p className="text-sm text-[#a38c84]">Scan your website terms, e-commerce policies, or apps for privacy law violations in real-time.</p>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+            </div>
+
+            <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
+               <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><Languages size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">Legal Translator</h3>
+               <p className="text-sm text-[#a38c84]">Translate official documents with precise legal terminology across 20+ EU jurisdictions perfectly.</p>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+            </div>
+
+            <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
+               <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><Briefcase size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">Internal HR Chat (RAG)</h3>
+               <p className="text-sm text-[#a38c84]">Train a private AI assistant purely on your corporate handbook to answer employee queries 24/7.</p>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+            </div>
+
+            <div onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#0f0f12] border border-white/10 hover:border-white/30 rounded-2xl p-6 cursor-pointer transition-all group">
+               <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center mb-4 text-white"><FileCheck size={20} /></div>
+               <h3 className="text-lg font-bold text-white mb-2">Debt Recovery Bot</h3>
+               <p className="text-sm text-[#a38c84]">Automate formal, legally-binding dunning letters and payment demands for late invoices.</p>
+               <div className="mt-4 flex items-center gap-2"><Lock size={12} className="text-[#5ed9ce]"/><span className="text-[#5ed9ce] text-xs font-bold uppercase tracking-widest">Enterprise Only</span></div>
+            </div>
+          </div>
         </section>
 
         {/* AI Legal Chat */}
-        <section className="mb-12 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}>
-            <button onClick={() => setIsChatOpen(!isChatOpen)} className="w-full flex items-center justify-between bg-gradient-to-r from-[#8B1A2B]/10 to-[#1a3a5c]/10 border border-[#8B1A2B]/20 hover:border-[#8B1A2B]/40 rounded-2xl px-6 py-4 mb-4 transition-all group">
+        <AnimatePresence>
+        {activeTool === 'contract' && (
+        <section className="mb-12 max-w-4xl mx-auto" id="contract-analyzer">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="bg-[#0f0f12] border border-[#8B1A2B]/30 rounded-2xl overflow-hidden shadow-2xl shadow-[#8B1A2B]/10">
+            <div className="flex items-center justify-between bg-gradient-to-r from-[#8B1A2B]/10 to-[#1a3a5c]/10 border-b border-[#8B1A2B]/20 px-6 py-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B1A2B] to-[#6B1420] flex items-center justify-center shadow-lg shadow-[#8B1A2B]/20">
                   <MessageSquare size={20} className="text-white" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-white font-extrabold text-sm tracking-wide">AI Legal Assistant</h3>
-                  <p className="text-[#a38c84] text-[10px] tracking-widest uppercase">Upload contracts & ask legal questions — {country}</p>
+                  <h3 className="text-white font-extrabold text-sm tracking-wide">Contract Redliner</h3>
+                  <p className="text-[#a38c84] text-[10px] tracking-widest uppercase">Jurisdiction — {country}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                {!isPremium && (
-                  <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded bg-white/5 border border-white/10 text-[#a38c84]">
-                    {Math.max(0, MAX_FREE_QUERIES - usageCount)}/{MAX_FREE_QUERIES} Free
-                  </span>
-                )}
-                <span className={`text-[#8B1A2B] text-xl transition-transform duration-300 ${isChatOpen ? 'rotate-180' : ''}`}>▾</span>
-              </div>
-            </button>
-
-            <AnimatePresence>
-              {isChatOpen && (
-                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                  <div className="bg-[#0f0f12] border border-white/10 rounded-2xl overflow-hidden">
-                    {/* Messages Area */}
-                    <div className="max-h-[400px] overflow-y-auto p-6 space-y-4 scrollbar-hide">
-                      {chatMessages.length === 0 && (
-                        <div className="text-center py-12">
-                          <Scale size={40} className="mx-auto mb-4 text-[#8B1A2B]/30" />
-                          <p className="text-[#a38c84] font-bold text-sm mb-1">Ask me anything about <span className="text-[#8B1A2B]">{country}</span> law</p>
-                          <p className="text-[#a38c84]/60 text-xs">Upload a contract, photo, or document for AI-powered legal analysis</p>
-                        </div>
-                      )}
+              <button className="text-white/50 hover:text-white transition-colors" onClick={() => setActiveTool(null)}><X size={20}/></button>
+            </div>
+            
+            <div className="max-h-[400px] overflow-y-auto p-6 space-y-4 scrollbar-hide">
+              {chatMessages.length === 0 && (
+                <div className="text-center py-12">
+                  <Scale size={40} className="mx-auto mb-4 text-[#8B1A2B]/30" />
+                  <p className="text-[#a38c84] font-bold text-sm mb-1">Upload an agreement to analyze under <span className="text-[#8B1A2B]">{country}</span> law</p>
+                  <p className="text-[#a38c84]/60 text-xs text-balance">The AI will highlight hidden liabilities, map out key dates, and cross-reference with local compliance standards.</p>
+                </div>
+              )}
 
                       {chatMessages.map((msg, i) => (
                         <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -519,12 +558,12 @@ export default function Page() {
                           <div className="flex items-center gap-3">
                             <Lock size={18} className="text-[#8B1A2B]" />
                             <div>
-                              <p className="text-white font-bold text-sm">Free queries exhausted</p>
-                              <p className="text-[#a38c84] text-[10px]">Upgrade to Pro for unlimited AI legal analysis</p>
+                              <p className="text-white font-bold text-sm">Trial queries exhausted</p>
+                              <p className="text-[#a38c84] text-[10px]">Contact sales to unlock your enterprise license</p>
                             </div>
                           </div>
-                          <button onClick={() => { setModalMode('premium'); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
-                            Upgrade
+                          <button onClick={() => { setModalMode('enterprise'); setIsModalOpen(true); }} className="bg-[#8B1A2B] text-[#2D0A10] px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest hover:scale-105 transition-transform">
+                            Book Demo
                           </button>
                         </div>
                       </div>
@@ -557,7 +596,7 @@ export default function Page() {
                         value={chatInput}
                         onChange={e => setChatInput(e.target.value)}
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); sendChat(); } }}
-                        placeholder={`Ask a legal question about  ${country}...`}
+                        placeholder={`Ask the engine to identify liabilities...`}
                         className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-[#8B1A2B] transition-colors placeholder:text-[#a38c84]/50"
                         disabled={!isPremium && usageCount >= MAX_FREE_QUERIES}
                       />
@@ -565,12 +604,11 @@ export default function Page() {
                         <Send size={18} />
                       </button>
                     </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
         </section>
+        )}
+        </AnimatePresence>
+
 
         {/* Laws Grid */}
         <section>
@@ -623,23 +661,9 @@ export default function Page() {
 
       {/* Footer */}
       <motion.footer initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="border-t border-white/5 py-10 px-6 max-w-5xl mx-auto">
-        {/* Payment Trust Logos */}
-        <div className="flex justify-center items-center gap-3 mb-6">
-          <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400 font-medium mr-2">
-            <ShieldCheck size={14} className="text-[#5ed9ce]" /> Secure Payments
-          </div>
-          <div className="flex justify-center items-center gap-2 grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100">
-            <div className="bg-white px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-300 h-6"><span className="text-[#142A7C] font-extrabold text-[11px] tracking-tighter">VISA</span></div>
-            <div className="bg-[#1A1F36] px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-600 h-6"><span className="text-[#635BFF] font-bold text-[11px]">stripe</span></div>
-            <div className="bg-white px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-300 h-6"><div className="flex"><div className="w-3 h-3 rounded-full bg-red-500/90 mix-blend-multiply relative left-1 z-10"></div><div className="w-3 h-3 rounded-full bg-yellow-500/90 mix-blend-multiply relative right-1"></div></div></div>
-            <div className="bg-black px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-gray-700 h-6"><span className="text-white font-bold text-[11px]"> Pay</span></div>
-            <div className="bg-[#003087] px-2 py-0.5 rounded shadow-sm flex items-center justify-center border border-[#003087] h-6"><span className="text-[#009cde] font-bold text-[10px]">Pay</span><span className="text-[#012169] font-bold text-[10px]">Pal</span></div>
-          </div>
-        </div>
-
         {/* Legal Compliance */}
         <div className="border-t border-white/5 pt-6 mb-6">
-          <h4 className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-[#a38c84] mb-4">International E-Commerce Legal Compliance</h4>
+          <h4 className="text-center text-[10px] font-black uppercase tracking-[0.2em] text-[#a38c84] mb-4">International Corporate Legal Compliance</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
             <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
               <p className="text-[#5ed9ce] font-bold text-[10px] uppercase tracking-widest mb-1">EU GDPR</p>

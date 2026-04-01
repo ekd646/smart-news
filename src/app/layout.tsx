@@ -6,8 +6,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
-  title: "Republia | AI-Powered Intelligence",
-  description: "Global Markets, Decoded by AI in Real-Time.",
+  title: "Republia | Enterprise Law Suite",
+  description: "Total Corporate Legal Intelligence, Decoded by AI.",
 };
 
 export default function RootLayout({
