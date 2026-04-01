@@ -19,93 +19,11 @@ const COUNTRIES = [
   "Finland", "Ireland", "Portugal", "Czech Republic", "Romania", "Greece", "Hungary"
 ];
 
-type LawItem = {
-  id: string;
-  category: string;
-  time: string;
-  headline: string;
-  source: string;
-};
-
-function extractLegalAnalysis(headline: string) {
-  const lower = headline.toLowerCase();
-
-  if (lower.includes("gdpr") || lower.includes("privacy") || lower.includes("data protection") || lower.includes("personal data")) {
-    return {
-      domain: "Data Protection & GDPR",
-      summary: "This regulation falls under the EU General Data Protection Regulation (GDPR) framework. GDPR establishes strict rules on how organizations collect, store, and process personal data of EU residents. Violations can result in fines up to €20 million or 4% of annual global turnover.",
-      impact: "HIGH — Affects all businesses processing EU citizen data. Non-compliance penalties are among the steepest in global regulatory history.",
-      keyArticles: "GDPR Art. 5 (Data Processing Principles), Art. 17 (Right to Erasure), Art. 83 (Administrative Fines)"
-    };
-  }
-
-  if (lower.includes("tax") || lower.includes("vat") || lower.includes("fiscal") || lower.includes("tariff")) {
-    return {
-      domain: "Tax & Fiscal Policy",
-      summary: "Tax legislation governs how governments collect revenue from individuals and corporations. Changes in VAT rates, corporate tax brackets, or cross-border tariff structures directly affect business profitability and international trade flows.",
-      impact: "HIGH — Direct financial impact on corporate margins and consumer pricing. Cross-border implications for multinational entities.",
-      keyArticles: "EU VAT Directive 2006/112/EC, OECD BEPS Framework, Pillar Two Global Minimum Tax (15%)"
-    };
-  }
-
-  if (lower.includes("labor") || lower.includes("labour") || lower.includes("employment") || lower.includes("worker") || lower.includes("wage")) {
-    return {
-      domain: "Employment & Labour Law",
-      summary: "Employment law regulates the relationship between employers and employees. This includes minimum wage standards, working hour limits, termination protections, and collective bargaining rights. EU directives set baseline protections across member states.",
-      impact: "MEDIUM — Impacts workforce management, payroll costs, and HR compliance obligations across jurisdictions.",
-      keyArticles: "EU Working Time Directive 2003/88/EC, EU Minimum Wage Directive 2022/2041"
-    };
-  }
-
-  if (lower.includes("criminal") || lower.includes("court") || lower.includes("judge") || lower.includes("sentence") || lower.includes("trial")) {
-    return {
-      domain: "Criminal Law & Judiciary",
-      summary: "Criminal law defines offenses against the state and prescribes punishments. Court decisions and sentencing guidelines establish precedents that shape future legal interpretations. Judicial independence is a cornerstone of rule-of-law democracies.",
-      impact: "MEDIUM — Establishes legal precedents affecting civil liberties, corporate liability, and cross-border extradition treaties.",
-      keyArticles: "European Convention on Human Rights (ECHR) Art. 6 (Right to Fair Trial), EU Framework Decision 2002/584/JHA (European Arrest Warrant)"
-    };
-  }
-
-  if (lower.includes("environment") || lower.includes("climate") || lower.includes("emission") || lower.includes("carbon") || lower.includes("green")) {
-    return {
-      domain: "Environmental & Climate Law",
-      summary: "Environmental legislation addresses pollution control, carbon emissions, and sustainable development mandates. The EU Green Deal and Fit for 55 package commit member states to achieving carbon neutrality by 2050.",
-      impact: "HIGH — Requires significant capital investment in green infrastructure. Carbon border taxes affect international trade competitiveness.",
-      keyArticles: "EU Green Deal, EU ETS Directive 2003/87/EC, Paris Agreement Art. 4 (NDCs)"
-    };
-  }
-
-  if (lower.includes("contract") || lower.includes("commercial") || lower.includes("business") || lower.includes("corporate") || lower.includes("merger")) {
-    return {
-      domain: "Commercial & Contract Law",
-      summary: "Commercial law governs business transactions, contract formation, and corporate governance. Merger and acquisition regulations ensure fair competition. Contract disputes are typically resolved through arbitration or civil court proceedings.",
-      impact: "HIGH — Directly affects M&A activity, contractual obligations, and corporate restructuring across borders.",
-      keyArticles: "EU Merger Regulation (EC) No 139/2004, UNIDROIT Principles of International Commercial Contracts"
-    };
-  }
-
-  if (lower.includes("regulat") || lower.includes("compliance") || lower.includes("sanction") || lower.includes("banking")) {
-    return {
-      domain: "Regulatory & Financial Compliance",
-      summary: "Financial regulation ensures market stability, consumer protection, and anti-money laundering compliance. Regulatory bodies impose licensing requirements, capital adequacy standards, and transaction monitoring obligations.",
-      impact: "HIGH — Banks and fintech companies face operational restrictions. Sanction violations carry severe criminal penalties.",
-      keyArticles: "EU MiFID II Directive, EU AMLD6, Basel III Capital Requirements Regulation"
-    };
-  }
-
-  return {
-    domain: "General European Legislation",
-    summary: "This legislative development reflects broader regulatory trends across European jurisdictions. The EU and national parliaments continuously evolve legal frameworks to address emerging societal, economic, and technological challenges.",
-    impact: "MEDIUM — May signal upcoming regulatory shifts that require monitoring for compliance readiness.",
-    keyArticles: "Treaty on European Union (TEU), Treaty on the Functioning of the EU (TFEU)"
-  };
-}
 
 export default function Page() {
   const [country, setCountry] = useState("Turkey");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"login" | "signup" | "enterprise" | "privacy" | "terms" | "cookie">("enterprise");
-  const [activeLaw, setActiveLaw] = useState<LawItem | null>(null);
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -177,41 +95,17 @@ export default function Page() {
     setIsChatLoading(false);
   };
 
-  const [laws, setLaws] = useState<LawItem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    setLaws([]);
-
-    fetch(`/api/laws?country=${encodeURIComponent(country)}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!isMounted) return;
-        if (data.laws) setLaws(data.laws);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        if (isMounted) setLoading(false);
-      });
-    return () => { isMounted = false; };
-  }, [country]);
-
-  const uniqueCategories = Array.from(new Set(laws.map(n => n.category)));
-  const aiData = activeLaw ? extractLegalAnalysis(activeLaw.headline) : null;
 
   return (
     <div className="bg-[#0a0a0c] min-h-screen text-[#e5e1e4] font-sans selection:bg-[#8B1A2B] selection:text-white">
-      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden mix-blend-screen opacity-40">
-        <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#8B1A2B]/15 blur-[140px] rounded-full"></div>
-        <div className="absolute bottom-[20%] left-[-10%] w-[800px] h-[800px] bg-[#1a3a5c]/20 blur-[150px] rounded-full"></div>
+      <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden mix-blend-screen opacity-50">
+        <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[1000px] h-[600px] bg-[#8B1A2B]/20 blur-[160px] rounded-[100%]"></div>
+        <div className="absolute bottom-[-10%] left-[50%] -translate-x-1/2 w-[1200px] h-[800px] bg-[#8B1A2B]/10 blur-[200px] rounded-[100%]"></div>
       </div>
 
       {/* Modal System */}
       <AnimatePresence>
-        {isModalOpen && !activeLaw && (
+        {isModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
             <motion.div initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }} className="bg-[#0f0f12] border border-white/10 shadow-2xl rounded-2xl p-8 max-w-md w-full relative">
               <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
@@ -338,42 +232,7 @@ export default function Page() {
         )}
       </AnimatePresence>
 
-      {/* AI Analysis Overlay */}
-      <AnimatePresence>
-        {activeLaw && aiData && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[250] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-            <motion.div initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }} className="bg-[#0f0f12] border border-white/10 shadow-2xl rounded-2xl p-6 md:p-8 max-w-4xl w-full relative max-h-[90vh] overflow-y-auto">
-              <button onClick={() => setActiveLaw(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"><X size={24} /></button>
 
-              <div className="flex items-center gap-3 mb-4 mt-2">
-                <span className="bg-[#5ed9ce]/20 text-[#5ed9ce] text-[10px] font-black uppercase tracking-[0.2em] px-2 py-1 rounded">{activeLaw.category}</span>
-                <span className="text-[#a38c84] text-xs font-medium tracking-widest">{activeLaw.time}</span>
-                <span className="text-[#8B1A2B] text-[10px] sm:text-xs font-bold uppercase tracking-widest ml-auto mr-6 border border-[#8B1A2B]/30 px-2 py-1 rounded">Source: {activeLaw.source}</span>
-              </div>
-
-              <h2 className="text-2xl md:text-4xl font-extrabold text-white mb-6 leading-tight">{activeLaw.headline}</h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-white/10 to-transparent border border-white/5 p-6 rounded-2xl relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-[#5ed9ce]"></div>
-                  <h3 className="flex items-center gap-2 text-[#5ed9ce] font-bold text-lg mb-3"><Scale size={18}/> Legal Domain</h3>
-                  <p className="text-[#8B1A2B] font-extrabold text-xl mb-2">{aiData.domain}</p>
-                  <p className="text-white/70 text-sm leading-relaxed">{aiData.summary}</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-white/10 to-transparent border border-white/5 p-6 rounded-2xl relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-[#8B1A2B]"></div>
-                  <h3 className="flex items-center gap-2 text-[#8B1A2B] font-bold text-lg mb-3"><Gavel size={18}/> Impact Assessment</h3>
-                  <p className="text-white font-extrabold text-xl mb-2">{aiData.impact.split('—')[0]}</p>
-                  <p className="text-white/70 text-sm leading-relaxed mb-4">{aiData.impact.split('—')[1]}</p>
-                  <h4 className="text-[#a38c84] font-bold text-xs uppercase tracking-widest mb-1">Key Legal References</h4>
-                  <p className="text-[#5ed9ce] text-xs font-mono">{aiData.keyArticles}</p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Header */}
       <motion.header initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }} className="fixed top-0 left-0 right-0 z-[100] flex flex-col items-center pt-6 pb-4 bg-gradient-to-b from-[#0a0a0c] via-[#0a0a0c]/95 to-transparent">
@@ -404,34 +263,21 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-8 md:gap-16 font-sans tracking-widest font-bold text-[11px] md:text-xs uppercase">
-          <a onClick={(e) => { e.preventDefault(); document.getElementById('updates')?.scrollIntoView({behavior:'smooth'});}} className="text-[#e8848f] hover:text-white transition-all duration-300 cursor-pointer">Live Legislation</a>
-          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#8B1A2B] transition-all duration-300 cursor-pointer">Enterprise API</button>
+          <a onClick={(e) => { e.preventDefault(); document.getElementById('pricing')?.scrollIntoView({behavior:'smooth'});}} className="text-[#e8848f] hover:text-white transition-all duration-300 cursor-pointer">Enterprise Plans</a>
+          <button onClick={() => { setModalMode("enterprise"); setIsModalOpen(true); }} className="text-[#a38c84] hover:text-[#8B1A2B] transition-all duration-300 cursor-pointer">Request API</button>
         </div>
       </motion.header>
 
       {/* Main Content */}
       <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1a3a5c]/30 border border-[#1a3a5c]/40 mb-6">
-            <Building2 size={14} className="text-[#5ed9ce]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#5ed9ce]">ENTERPRISE LEGAL SUITE</span>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B1A2B]/10 border border-[#8B1A2B]/40 mb-6">
+            <Building2 size={14} className="text-[#8B1A2B]" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B1A2B]">ENTERPRISE LEGAL SUITE</span>
           </motion.div>
           
           <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">One Platform.<br/><span className="text-[#8B1A2B]">Total Legal Intelligence.</span></h1>
-
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-4 bg-[#0f0f12] max-w-fit mx-auto p-2 rounded-[32px] border border-white/5 shadow-2xl flex-wrap mb-12">
-            <div className="relative flex items-center px-4 md:px-6 w-full lg:w-auto h-11 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-[#8B1A2B]/20 cursor-pointer">
-              <Globe size={18} className="text-[#8B1A2B] mr-2" />
-              <select
-                value={country}
-                onChange={e => setCountry(e.target.value)}
-                className="bg-transparent text-white font-extrabold text-xs sm:text-sm tracking-widest outline-none cursor-pointer appearance-none pr-8 w-full md:min-w-[200px] hover:text-[#e8848f] transition-colors"
-              >
-                {COUNTRIES.map(c => <option key={c} value={c} className="bg-[#0f0f12] text-white">{c}</option>)}
-              </select>
-              <div className="absolute right-4 pointer-events-none text-[#8B1A2B]">▾</div>
-            </div>
-          </div>
+          <p className="max-w-xl mx-auto text-[#a38c84] mb-12 text-sm sm:text-base leading-relaxed">Automate corporate workflows with military-grade encrypted AI. Analyze contracts, enforce compliance, and protect data privacy in seconds.</p>
           
           {/* APPS GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto text-left mb-16">
@@ -610,52 +456,56 @@ export default function Page() {
         </AnimatePresence>
 
 
-        {/* Laws Grid */}
-        <section>
-          {loading ? (
-            <div className="text-center py-20">
-              <div className="inline-flex items-center gap-3 text-[#a38c84]">
-                <div className="w-5 h-5 border-2 border-[#8B1A2B] border-t-transparent rounded-full animate-spin"></div>
-                <span className="font-bold tracking-widest text-sm uppercase">Scanning {country} Legal Database...</span>
-              </div>
-            </div>
-          ) : laws.length === 0 ? (
-            <div className="text-center py-20 text-[#a38c84]">
-              <FileText size={48} className="mx-auto mb-4 opacity-30" />
-              <p className="font-bold tracking-widest text-sm uppercase">No legal updates found for {country}</p>
-            </div>
-          ) : (
-            <>
-              {uniqueCategories.map(cat => {
-                const catLaws = laws.filter(l => l.category === cat);
-                if (catLaws.length === 0) return null;
-                return (
-                  <div key={cat} className="mb-12">
-                    <div className="flex items-center gap-3 mb-6">
-                      <span className="bg-white/5 border border-white/10 text-white font-black text-[10px] uppercase tracking-[0.2em] px-3 py-1.5 rounded-sm">{cat}</span>
-                      <div className="flex-1 h-[1px] bg-white/5"></div>
-                      <span className="text-[#a38c84] text-[10px] font-bold tracking-widest">{catLaws.length} updates</span>
-                    </div>
+        {/* Enterprise AI Pricing Grid */}
+        <section id="pricing" className="mt-20 pt-16 border-t border-white/5">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-black text-white tracking-tight mb-4">Enterprise <span className="text-[#8B1A2B]">AI Packages</span></h2>
+            <p className="text-[#a38c84] text-sm tracking-wide max-w-lg mx-auto">Scale your compliance engine. Dedicated clusters, custom LLM fine-tuning, and SLA guarantees for total corporate security.</p>
+          </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-                      {catLaws.map(law => (
-                        <motion.div
-                          key={law.id}
-                          whileHover={{ scale: 1.02, y: -2 }}
-                          onClick={() => setActiveLaw(law)}
-                          className="bg-white/[0.03] hover:bg-white/[0.07] border border-white/5 hover:border-[#8B1A2B]/30 rounded-xl p-4 cursor-pointer transition-all duration-300 group"
-                        >
-                          <span className="text-[#5ed9ce]/60 font-mono text-[10px] border border-[#5ed9ce]/20 px-1.5 py-0.5 rounded mb-2 inline-block">{law.time}</span>
-                          <h3 className="text-white font-bold text-sm leading-snug mb-3 group-hover:text-[#e8848f] transition-colors line-clamp-3">{law.headline}</h3>
-                          <p className="text-[#a38c84] text-[10px] font-bold uppercase tracking-widest">{law.source}</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Standard Tier */}
+            <div className="bg-[#0f0f12] border border-white/10 rounded-[32px] p-8 hover:border-white/30 transition-all flex flex-col">
+              <h3 className="text-xl font-bold text-white mb-2">Professional</h3>
+              <p className="text-xs text-[#a38c84] mb-6">For boutique law firms and mid-sized legal departments.</p>
+              <div className="text-4xl font-black text-white mb-8 tracking-tighter">€1,500<span className="text-sm font-bold text-[#a38c84] tracking-normal"> /mo</span></div>
+              <ul className="space-y-4 mb-8 flex-1">
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> 500 Contract Scans/mo</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> EU & UK Jurisdictions</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-[#5ed9ce]" /> Standard Encrypted Sandbox</li>
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-white/5 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-colors">Select Plan</button>
+            </div>
+
+            {/* Scale Tier */}
+            <div className="bg-gradient-to-b from-[#8B1A2B]/20 to-[#0f0f12] border border-[#8B1A2B]/40 rounded-[32px] p-8 hover:border-[#8B1A2B] transition-all flex flex-col relative transform md:-translate-y-4 shadow-2xl shadow-[#8B1A2B]/10">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#8B1A2B] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-b-xl">Most Popular</div>
+              <h3 className="text-xl font-bold text-white mb-2 mt-2">Enterprise Scale</h3>
+              <p className="text-xs text-[#a38c84] mb-6">For multinational corporations requiring multi-language legal LLMs.</p>
+              <div className="text-4xl font-black text-white mb-8 tracking-tighter">€4,000<span className="text-sm font-bold text-[#a38c84] tracking-normal"> /mo</span></div>
+              <ul className="space-y-4 mb-8 flex-1">
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Unlimited Contract Scans</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Global Jurisdictions (50+ Countries)</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> OCR & Multi-language Translation</li>
+                <li className="flex items-center gap-3 text-sm text-white font-bold"><ShieldCheck size={16} className="text-[#8B1A2B]" /> Dedicated Account Manager</li>
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-[#8B1A2B] text-[#2D0A10] font-black uppercase tracking-widest text-xs shadow-lg hover:brightness-110 transition-all">Book Trial</button>
+            </div>
+
+            {/* Custom Tier */}
+            <div className="bg-[#0f0f12] border border-white/10 rounded-[32px] p-8 hover:border-white/30 transition-all flex flex-col">
+              <h3 className="text-xl font-bold text-white mb-2">On-Premise</h3>
+              <p className="text-xs text-[#a38c84] mb-6">For governments, banks, and institutions with strict data mandates.</p>
+              <div className="text-4xl font-black text-white mb-8 tracking-tighter">Custom</div>
+              <ul className="space-y-4 mb-8 flex-1">
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-white/40" /> Private Cloud / Bare Metal Deploy</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-white/40" /> Fine-tuning on Private Handbooks</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-white/40" /> Military-grade Compliance (SOC2)</li>
+                <li className="flex items-center gap-3 text-sm text-[#e5e1e4]"><ShieldCheck size={16} className="text-white/40" /> 24/7 Priority SLA</li>
+              </ul>
+              <button className="w-full py-4 rounded-xl bg-white/5 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/10 transition-colors">Contact Sales</button>
+            </div>
+          </div>
         </section>
       </main>
 
