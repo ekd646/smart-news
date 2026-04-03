@@ -464,20 +464,19 @@ export default function Page() {
         transition={{ duration: 0.6 }}
         className="fixed top-0 left-0 right-0 z-[100] flex flex-col items-center pt-6 pb-4 bg-[#451c20]/90 backdrop-blur-xl border-b border-white/5"
       >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 flex items-center justify-center">
-            <img
-              src="/republia-logo.png"
-              alt="Republia"
-              className="w-[180%] h-[180%] object-cover max-w-none"
-            />
+        <div className="flex items-center gap-4 mb-4 select-none group cursor-pointer">
+          <div className="relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#7f2227] to-[#451c20] border border-[#db2d27]/30 rounded-lg shadow-[0_0_20px_rgba(219,45,39,0.15)] overflow-hidden">
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]"></div>
+            <span className="text-[#f2f2f2] font-serif text-3xl font-black italic tracking-tighter pr-1">
+              R
+            </span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xl md:text-2xl font-black tracking-widest text-white uppercase font-sans leading-none">
-              Republia<span className="text-[#db2d27]">.co</span>
+            <span className="text-2xl md:text-3xl font-serif font-black tracking-tight text-[#f2f2f2] leading-none mb-1">
+              Republia<span className="text-[#db2d27]">.</span>
             </span>
-            <span className="text-[12px] md:text-[14px] font-extrabold tracking-[0.3em] text-[#db2d27] uppercase leading-none mt-1">
-              Enterprise AI Suite
+            <span className="text-[10px] md:text-[11px] font-sans font-bold tracking-[0.35em] text-[#db2d27] uppercase leading-none opacity-90">
+              Enterprise Legal Suite
             </span>
           </div>
         </div>
