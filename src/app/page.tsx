@@ -473,7 +473,7 @@ export default function Page() {
           </div>
           <div className="flex flex-col">
             <span className="text-2xl md:text-3xl font-serif font-black tracking-tight text-[#f2f2f2] leading-none mb-1">
-              Republia<span className="text-[#db2d27]">.</span>
+              Republia<span className="text-[#db2d27]">.co</span>
             </span>
             <span className="text-[10px] md:text-[11px] font-sans font-bold tracking-[0.35em] text-[#db2d27] uppercase leading-none opacity-90">
               Enterprise Legal Suite
