@@ -64,6 +64,7 @@ export default function Page() {
   >("enterprise");
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -179,34 +180,54 @@ export default function Page() {
                     </div>
                   </div>
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2">
-                    Enterprise <span className="text-[#db2d27]">Access</span>
+                    Get in <span className="text-[#db2d27]">Touch</span>
                   </h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">
-                    This module is reserved for enterprise clients. Request a
-                    live demo to explore full capabilities.
+                    Send us your details and we'll respond via email within 24 hours.
                   </p>
                   <div className="space-y-4 mb-6">
                     <input
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="Work Email"
                       className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
                     />
                     <input
                       type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
                       placeholder="Company Name"
+                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                    />
+                    <input
+                      type="text"
+                      placeholder="What do you need? (optional)"
                       className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
                     />
                   </div>
                   <button
-                    onClick={() => {
-                      alert(
-                        "Your request has been sent to our enterprise sales team. We will be in touch shortly.",
-                      );
+                    disabled={isSubmitting}
+                    onClick={async () => {
+                      if (!email) return;
+                      setIsSubmitting(true);
+                      const { error } = await supabase
+                        .from("leads")
+                        .insert([{ email, company: companyName, source: "Republia - Enterprise Enquiry" }]);
+                      setIsSubmitting(false);
+                      if (error) {
+                        alert("Something went wrong. Please try again.");
+                        console.error(error);
+                        return;
+                      }
+                      alert("Enquiry submitted! We'll be in touch via email within 24 hours.");
+                      setEmail("");
+                      setCompanyName("");
                       setIsModalOpen(false);
                     }}
-                    className="w-full py-3 bg-[#db2d27] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity"
+                    className="w-full py-3 bg-[#db2d27] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                   >
-                    Book a Demo
+                    {isSubmitting ? "Sending..." : "Send Enquiry"}
                   </button>
                 </div>
               )}
