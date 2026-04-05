@@ -1125,7 +1125,13 @@ export default function Page() {
                   Encrypted Sandbox
                 </li>
               </ul>
-              <button className="w-full py-4 rounded-xl bg-[#db2d27]/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-[#db2d27]/40 transition-colors">
+              <button 
+                onClick={() => {
+                  setModalMode("enterprise");
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-4 rounded-xl bg-[#db2d27]/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-[#db2d27]/40 transition-colors"
+               >
                 Select Plan
               </button>
             </div>
@@ -1167,7 +1173,13 @@ export default function Page() {
                   Account Manager
                 </li>
               </ul>
-              <button className="w-full py-4 rounded-xl bg-[#db2d27] text-[#2D0A10] font-black uppercase tracking-widest text-xs shadow-lg hover:brightness-110 transition-all">
+              <button 
+                onClick={() => {
+                  setModalMode("enterprise");
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-4 rounded-xl bg-[#db2d27] text-[#2D0A10] font-black uppercase tracking-widest text-xs shadow-lg hover:brightness-110 transition-all"
+               >
                 Book Trial
               </button>
             </div>
@@ -1200,7 +1212,13 @@ export default function Page() {
                   Priority SLA
                 </li>
               </ul>
-              <button className="w-full py-4 rounded-xl bg-[#db2d27]/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-[#db2d27]/40 transition-colors">
+              <button 
+                onClick={() => {
+                  setModalMode("enterprise");
+                  setIsModalOpen(true);
+                }}
+                className="w-full py-4 rounded-xl bg-[#db2d27]/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-[#db2d27]/40 transition-colors"
+               >
                 Contact Sales
               </button>
             </div>
