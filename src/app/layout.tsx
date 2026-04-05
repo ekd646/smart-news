@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Total Corporate Legal Intelligence, Decoded by AI.",
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%237f2227'/><text x='50' y='76' font-family='serif' font-size='72' font-weight='900' font-style='italic' fill='%23f2f2f2' text-anchor='middle'>R</text></svg>",
-    apple: "/og-image.png",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Republia Enterprise Suite" }],
