@@ -60,7 +60,7 @@ export default function Page() {
   const [country, setCountry] = useState("Turkey");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<
-    "login" | "signup" | "enterprise" | "privacy" | "terms" | "cookie"
+    "login" | "signup" | "enterprise" | "privacy" | "terms" | "cookie" | "corporate"
   >("enterprise");
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
@@ -442,6 +442,30 @@ export default function Page() {
                       We use anonymized analytics to optimize platform
                       performance across jurisdictions.
                     </p>
+                  </div>
+                </div>
+              )}
+
+              {modalMode === "corporate" && (
+                <div className="animate-fade-in-up max-h-[60vh] overflow-y-auto pr-4 scrollbar-hide">
+                  <div className="flex justify-center text-left w-full mx-auto">
+                    <div className="flex flex-col w-full text-white/90 font-mono space-y-4 text-xs tracking-widest leading-relaxed border-l-4 border-[#db2d27] bg-[#451c20]/50 backdrop-blur-sm p-6 rounded-r-lg">
+                      <div className="border-b border-[#db2d27]/20 pb-4 mb-2">
+                        <span className="text-[#db2d27] font-black tracking-[0.2em] uppercase text-[10px]">LEGAL ENTITY & OWNERSHIP</span>
+                        <h3 className="text-2xl font-bold font-serif text-white mt-2 uppercase tracking-[0.3em]">NISDE LTD</h3>
+                        <p className="text-[10px] text-[#db2d27] font-sans tracking-widest mt-1 uppercase">Company Number: 14781423</p>
+                      </div>
+                      <div>
+                        <span className="text-white/40 uppercase tracking-[0.15em] text-[10px] font-bold block mb-1">REGISTERED OFFICE</span>
+                         <span className="font-sans text-[#f2f2f2]">71-75 Shelton Street<br/>
+                         Covent Garden, London<br/>
+                         WC2H 9JQ, United Kingdom</span>
+                      </div>
+                      <div className="pt-2">
+                         <span className="text-white/40 uppercase tracking-[0.15em] text-[10px] font-bold block mb-1">MANAGING DIRECTOR</span>
+                         <span className="font-sans font-black uppercase text-[#db2d27]">MUSTAFA DENiZ AVCI</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -1249,6 +1273,17 @@ export default function Page() {
         </div>
         <div className="text-white/50 text-[10px] text-center">
           © 2026 Republia. All rights reserved. Legal Intelligence Platform.
+          <div className="mt-5 flex justify-center">
+            <button
+              onClick={() => {
+                setModalMode("corporate");
+                setIsModalOpen(true);
+              }}
+              className="text-white/40 hover:text-white transition-all uppercase tracking-[0.2em] font-bold border border-[#db2d27]/20 px-3 py-1.5 rounded shadow-sm bg-black/20"
+            >
+              A NISDE LTD Company
+            </button>
+          </div>
         </div>
       </motion.footer>
     </div>
