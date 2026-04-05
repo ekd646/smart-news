@@ -234,7 +234,7 @@ export default function Page() {
                         .insert([{ email, company: companyName, source: "Republia - Enterprise Enquiry" }]);
                       setIsSubmitting(false);
                       if (error) {
-                        showToast("Something went wrong. Please try again.", false);
+                        showToast(`Error: ${error.message}`, false);
                         console.error(error);
                         return;
                       }
