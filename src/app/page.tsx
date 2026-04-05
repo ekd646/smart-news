@@ -68,6 +68,12 @@ export default function Page() {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+
+  const showToast = (msg: string, ok = true) => {
+    setToast({ msg, ok });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   // AI Chat State
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -150,6 +156,18 @@ export default function Page() {
         <div className="absolute bottom-[-10%] left-[50%] -translate-x-1/2 w-[1200px] h-[800px] bg-[#db2d27]/10 blur-[200px] rounded-[100%]"></div>
       </div>
 
+      {/* In-Theme Toast */}
+      {toast && (
+        <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl border text-sm font-semibold tracking-wide ${
+          toast.ok
+            ? "bg-[#1a0a0b] border-[#db2d27]/40 text-white"
+            : "bg-[#1a0a0b] border-red-500/50 text-red-400"
+        }`}>
+          <span className={toast.ok ? "text-[#db2d27]" : "text-red-400"}>{toast.ok ? "✓" : "✕"}</span>
+          {toast.msg}
+        </div>
+      )}
+
       {/* Modal System */}
       <AnimatePresence>
         {isModalOpen && (
@@ -216,11 +234,11 @@ export default function Page() {
                         .insert([{ email, company: companyName, source: "Republia - Enterprise Enquiry" }]);
                       setIsSubmitting(false);
                       if (error) {
-                        alert("Something went wrong. Please try again.");
+                        showToast("Something went wrong. Please try again.", false);
                         console.error(error);
                         return;
                       }
-                      alert("Enquiry submitted! We'll be in touch via email within 24 hours.");
+                      showToast("Enquiry submitted! We'll be in touch via email within 24 hours.");
                       setEmail("");
                       setCompanyName("");
                       setIsModalOpen(false);
@@ -267,7 +285,7 @@ export default function Page() {
                         });
                       setIsSubmitting(false);
                       if (error) {
-                        alert(error.message);
+                        showToast(error.message, false);
                         return;
                       }
                       setUser(data.user);
@@ -326,12 +344,10 @@ export default function Page() {
                       });
                       setIsSubmitting(false);
                       if (error) {
-                        alert(error.message);
+                        showToast(error.message, false);
                         return;
                       }
-                      alert(
-                        "Success! Check your email for authentication link.",
-                      );
+                      showToast("Account created! Check your email for the confirmation link.");
                       setModalMode("login");
                       setPassword("");
                     }}
@@ -553,6 +569,16 @@ export default function Page() {
                 className="text-white/90 text-xs font-bold uppercase tracking-widest hover:text-white transition-all"
               >
                 Client Login
+              </button>
+              <span className="text-white/20">|</span>
+              <button
+                onClick={() => {
+                  setModalMode("signup");
+                  setIsModalOpen(true);
+                }}
+                className="text-[#db2d27] text-xs font-bold uppercase tracking-widest hover:text-white transition-all"
+              >
+                Create Account
               </button>
             </>
           )}
