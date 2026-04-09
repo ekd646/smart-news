@@ -32,6 +32,23 @@ type ChatMessage = {
   filePreview?: string;
 };
 
+const PROFESSIONS = [
+  "Law Firm / Attorney",
+  "Real Estate Agency",
+  "E-Commerce / Retail",
+  "Medical Clinic / Healthcare",
+  "Human Resources",
+  "Other"
+];
+
+const AUTOMATION_SCHEMAS: Record<string, string[]> = {
+  "Law Firm / Attorney": ["AI Contract Redlining", "Legal Document Generation", "Debt Recovery Bot", "Case Law Research", "Client Intake Chatbot", "GDPR Scanner", "Legal Translation"],
+  "Real Estate Agency": ["Property Inquiry Agent", "Lead Qualification", "Tenant Onboarding", "Lease Generator", "Maintenance Bot", "Listing Analyzer", "Appointment AI"],
+  "E-Commerce / Retail": ["24/7 Support Bot", "Abandoned Cart Recovery", "Return Automation", "Inventory Alerts", "Vendor Contracts", "Recommendation AI", "Order Tracking"],
+  "Medical Clinic / Healthcare": ["Patient Intake AI", "Appointment Booking", "Post-Op Follow-Up", "Record Summarizer", "HIPAA Generator", "Insurance Claims", "Symptom Checker"],
+  "Human Resources": ["Candidate Screening", "Employee Onboarding", "Internal HR Chatbot", "Employment Contracts", "Leave Automator", "Performance Reviews", "Policy Checker"]
+};
+
 const COUNTRIES = [
   "Turkey",
   "Germany",
@@ -65,6 +82,10 @@ export default function Page() {
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [profession, setProfession] = useState("");
+  const [customProfession, setCustomProfession] = useState("");
+  const [selectedAutomations, setSelectedAutomations] = useState<string[]>([]);
+  const [customAutomation, setCustomAutomation] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -191,61 +212,132 @@ export default function Page() {
               </button>
 
               {modalMode === "enterprise" && (
-                <div className="animate-fade-in-up">
-                  <div className="flex justify-center mb-6">
+                <div className="animate-fade-in-up w-full max-h-[80vh] overflow-y-auto scrollbar-hide px-1">
+                  <div className="flex justify-center mb-4 mt-2">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#db2d27] to-[#451c20] flex items-center justify-center shadow-lg shadow-[#db2d27]/5">
-                      <Building2 size={28} className="text-white" />
+                      <Sparkles size={28} className="text-white" />
                     </div>
                   </div>
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2">
-                    Get in <span className="text-[#db2d27]">Touch</span>
+                    Design Your <span className="text-[#db2d27]">AI System</span>
                   </h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">
-                    Send us your details and we'll respond via email within 24 hours.
+                    Configure your required automation architectures below.
                   </p>
+                  
                   <div className="space-y-4 mb-6">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Work Email"
-                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                    />
-                    <input
-                      type="text"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Company Name"
-                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                    />
-                    <input
-                      type="text"
-                      placeholder="What do you need? (optional)"
-                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                    />
+                    <div>
+                      <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">01. Industry / Profession</label>
+                      <select
+                        value={profession}
+                        onChange={(e) => {
+                          setProfession(e.target.value);
+                          setSelectedAutomations([]);
+                        }}
+                        className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors appearance-none"
+                      >
+                        <option value="" disabled>Select your industry...</option>
+                        {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
+                      </select>
+                    </div>
+
+                    {profession === "Other" && (
+                      <div className="animate-fade-in-up">
+                        <input
+                          type="text"
+                          value={customProfession}
+                          onChange={(e) => setCustomProfession(e.target.value)}
+                          placeholder="Please specify your profession..."
+                          className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                        />
+                      </div>
+                    )}
+
+                    {profession && profession !== "Other" && (
+                      <div className="pt-2 animate-fade-in-up">
+                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-2">02. Select Architectures</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {AUTOMATION_SCHEMAS[profession].map(schema => {
+                            const isActive = selectedAutomations.includes(schema);
+                            return (
+                              <div 
+                                key={schema} 
+                                onClick={() => setSelectedAutomations(prev => isActive ? prev.filter(a => a !== schema) : [...prev, schema])}
+                                className={`p-2.5 text-xs rounded-lg cursor-pointer transition-colors border ${isActive ? 'bg-[#db2d27] border-[#db2d27] text-[#2D0A10] font-bold shadow-md' : 'bg-[#db2d27]/5 border-[#db2d27]/20 text-white/80 hover:bg-[#db2d27]/20'}`}
+                              >
+                                {schema}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {profession && (
+                      <div className="pt-2 animate-fade-in-up">
+                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">03. Custom Requirements</label>
+                        <textarea
+                          value={customAutomation}
+                          onChange={(e) => setCustomAutomation(e.target.value)}
+                          placeholder="Describe any specific automation you need (optional)..."
+                          className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors h-24 resize-none text-sm"
+                        />
+                      </div>
+                    )}
+
+                    {profession && (
+                      <div className="pt-4 border-t border-[#db2d27]/20 space-y-3 animate-fade-in-up">
+                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">04. Contact Details</label>
+                        <input
+                          type="text"
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                          placeholder="Company Name"
+                          className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                        />
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Preferred Contact Email"
+                          className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                        />
+                      </div>
+                    )}
                   </div>
+
                   <button
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !email}
                     onClick={async () => {
                       if (!email) return;
                       setIsSubmitting(true);
+                      
+                      const finalProfession = profession === "Other" ? customProfession : profession;
+                      const sourceStr = `${finalProfession} | Architecture: ${selectedAutomations.join(", ")} | Custom: ${customAutomation}`;
+
                       const { error } = await supabase
                         .from("leads")
-                        .insert([{ email, company: companyName, source: "Republia - Enterprise Enquiry" }]);
+                        .insert([{ email, company: companyName, source: sourceStr }]);
+                        
                       setIsSubmitting(false);
                       if (error) {
                         showToast(`Error: ${error.message}`, false);
-                        console.error(error);
                         return;
                       }
-                      showToast("Enquiry submitted! We'll be in touch via email within 24 hours.");
+                      showToast("Blueprint submitted! We will contact you at " + email);
                       setEmail("");
                       setCompanyName("");
+                      setProfession("");
+                      setCustomProfession("");
+                      setSelectedAutomations([]);
+                      setCustomAutomation("");
                       setIsModalOpen(false);
                     }}
-                    className="w-full py-3 bg-[#db2d27] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className={`w-full py-3 font-black tracking-widest uppercase rounded-lg shadow-lg transition-all
+                      ${!email || isSubmitting ? 'bg-[#db2d27]/50 text-[#2D0A10]/50 cursor-not-allowed' : 'bg-[#db2d27] text-[#2D0A10] hover:opacity-90'}
+                    `}
                   >
-                    {isSubmitting ? "Sending..." : "Send Enquiry"}
+                    {isSubmitting ? "Processing..." : "Submit Blueprint"}
                   </button>
                 </div>
               )}
