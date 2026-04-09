@@ -634,7 +634,7 @@ export default function Page() {
       </motion.header>
 
       {/* Main Content */}
-      <main className="pt-32 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
+      <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
           
           {/* THE LOGO/EMBLEM */}
