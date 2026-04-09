@@ -637,19 +637,6 @@ export default function Page() {
       <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
           
-          {/* THE LOGO/EMBLEM */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#7f2227] to-[#451c20] border border-[#db2d27]/30 rounded-2xl shadow-[0_0_30px_rgba(219,45,39,0.3)] mb-8 overflow-hidden z-10"
-          >
-            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]"></div>
-            <span className="text-[#f2f2f2] font-serif text-5xl font-black italic tracking-tighter pr-2">
-              R
-            </span>
-          </motion.div>
-
           {/* INLINE WIZARD */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
