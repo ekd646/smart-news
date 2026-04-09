@@ -212,132 +212,55 @@ export default function Page() {
               </button>
 
               {modalMode === "enterprise" && (
-                <div className="animate-fade-in-up w-full max-h-[80vh] overflow-y-auto scrollbar-hide px-1">
-                  <div className="flex justify-center mb-4 mt-2">
+                <div className="animate-fade-in-up">
+                  <div className="flex justify-center mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#db2d27] to-[#451c20] flex items-center justify-center shadow-lg shadow-[#db2d27]/5">
-                      <Sparkles size={28} className="text-white" />
+                      <Building2 size={28} className="text-white" />
                     </div>
                   </div>
                   <h2 className="text-3xl font-extrabold text-white text-center mb-2">
-                    Design Your <span className="text-[#db2d27]">AI System</span>
+                    Get in <span className="text-[#db2d27]">Touch</span>
                   </h2>
                   <p className="text-[#d4b5b8] text-center mb-6 text-sm">
-                    Configure your required automation architectures below.
+                    Send us your details and we'll respond via email within 24 hours.
                   </p>
-                  
                   <div className="space-y-4 mb-6">
-                    <div>
-                      <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">01. Industry / Profession</label>
-                      <select
-                        value={profession}
-                        onChange={(e) => {
-                          setProfession(e.target.value);
-                          setSelectedAutomations([]);
-                        }}
-                        className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors appearance-none"
-                      >
-                        <option value="" disabled>Select your industry...</option>
-                        {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
-                      </select>
-                    </div>
-
-                    {profession === "Other" && (
-                      <div className="animate-fade-in-up">
-                        <input
-                          type="text"
-                          value={customProfession}
-                          onChange={(e) => setCustomProfession(e.target.value)}
-                          placeholder="Please specify your profession..."
-                          className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                        />
-                      </div>
-                    )}
-
-                    {profession && profession !== "Other" && (
-                      <div className="pt-2 animate-fade-in-up">
-                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-2">02. Select Architectures</label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {AUTOMATION_SCHEMAS[profession].map(schema => {
-                            const isActive = selectedAutomations.includes(schema);
-                            return (
-                              <div 
-                                key={schema} 
-                                onClick={() => setSelectedAutomations(prev => isActive ? prev.filter(a => a !== schema) : [...prev, schema])}
-                                className={`p-2.5 text-xs rounded-lg cursor-pointer transition-colors border ${isActive ? 'bg-[#db2d27] border-[#db2d27] text-[#2D0A10] font-bold shadow-md' : 'bg-[#db2d27]/5 border-[#db2d27]/20 text-white/80 hover:bg-[#db2d27]/20'}`}
-                              >
-                                {schema}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {profession && (
-                      <div className="pt-2 animate-fade-in-up">
-                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">03. Custom Requirements</label>
-                        <textarea
-                          value={customAutomation}
-                          onChange={(e) => setCustomAutomation(e.target.value)}
-                          placeholder="Describe any specific automation you need (optional)..."
-                          className="w-full bg-[#db2d27]/10 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors h-24 resize-none text-sm"
-                        />
-                      </div>
-                    )}
-
-                    {profession && (
-                      <div className="pt-4 border-t border-[#db2d27]/20 space-y-3 animate-fade-in-up">
-                        <label className="block text-xs font-bold text-[#db2d27] lowercase tracking-widest mb-1">04. Contact Details</label>
-                        <input
-                          type="text"
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
-                          placeholder="Company Name"
-                          className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                        />
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Preferred Contact Email"
-                          className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
-                        />
-                      </div>
-                    )}
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Work Email"
+                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                    />
+                    <input
+                      type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Company Name"
+                      className="w-full bg-[#db2d27]/20 border border-[#db2d27]/20 rounded-lg px-4 py-3 text-white outline-none focus:border-[#db2d27] transition-colors"
+                    />
                   </div>
-
                   <button
-                    disabled={isSubmitting || !email}
+                    disabled={isSubmitting}
                     onClick={async () => {
                       if (!email) return;
                       setIsSubmitting(true);
-                      
-                      const finalProfession = profession === "Other" ? customProfession : profession;
-                      const sourceStr = `${finalProfession} | Architecture: ${selectedAutomations.join(", ")} | Custom: ${customAutomation}`;
-
                       const { error } = await supabase
                         .from("leads")
-                        .insert([{ email, company: companyName, source: sourceStr }]);
-                        
+                        .insert([{ email, company: companyName, source: "Republia - Quick Contact Form" }]);
                       setIsSubmitting(false);
                       if (error) {
                         showToast(`Error: ${error.message}`, false);
                         return;
                       }
-                      showToast("Blueprint submitted! We will contact you at " + email);
+                      showToast("Enquiry submitted! We'll be in touch via email within 24 hours.");
                       setEmail("");
                       setCompanyName("");
-                      setProfession("");
-                      setCustomProfession("");
-                      setSelectedAutomations([]);
-                      setCustomAutomation("");
                       setIsModalOpen(false);
                     }}
-                    className={`w-full py-3 font-black tracking-widest uppercase rounded-lg shadow-lg transition-all
-                      ${!email || isSubmitting ? 'bg-[#db2d27]/50 text-[#2D0A10]/50 cursor-not-allowed' : 'bg-[#db2d27] text-[#2D0A10] hover:opacity-90'}
-                    `}
+                    className="w-full py-3 bg-[#db2d27] text-[#2D0A10] font-black tracking-widest uppercase rounded-lg shadow-lg hover:opacity-90 transition-opacity disabled:opacity-50"
                   >
-                    {isSubmitting ? "Processing..." : "Submit Blueprint"}
+                    {isSubmitting ? "Sending..." : "Send Enquiry"}
                   </button>
                 </div>
               )}
@@ -711,8 +634,161 @@ export default function Page() {
       </motion.header>
 
       {/* Main Content */}
-      <main className="pt-52 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
+      <main className="pt-32 pb-8 px-6 max-w-[1600px] mx-auto min-h-screen">
         <section className="text-center mb-16">
+          
+          {/* THE LOGO/EMBLEM */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#7f2227] to-[#451c20] border border-[#db2d27]/30 rounded-2xl shadow-[0_0_30px_rgba(219,45,39,0.3)] mb-8 overflow-hidden z-10"
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]"></div>
+            <span className="text-[#f2f2f2] font-serif text-5xl font-black italic tracking-tighter pr-2">
+              R
+            </span>
+          </motion.div>
+
+          {/* INLINE WIZARD */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="w-full max-w-2xl mx-auto bg-[#1a0a0b]/80 backdrop-blur-2xl border border-[#db2d27]/50 rounded-3xl p-6 md:p-8 mb-12 shadow-[0_0_50px_rgba(219,45,39,0.15)] text-left relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#db2d27] to-transparent opacity-50"></div>
+            
+            <h2 className="text-2xl font-extrabold text-white mb-6 flex items-center justify-between">
+              <span>Design Your <span className="text-[#db2d27]">AI Architecture</span></span>
+              <Sparkles className="text-[#db2d27] animate-pulse" size={24} />
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-[10px] font-black text-[#db2d27] uppercase tracking-[0.2em] mb-2">01. Select Industry</label>
+                <select
+                  value={profession}
+                  onChange={(e) => {
+                    setProfession(e.target.value);
+                    setSelectedAutomations([]);
+                  }}
+                  className="w-full bg-[#db2d27]/10 border border-[#db2d27]/30 hover:border-[#db2d27]/60 rounded-xl px-4 py-3.5 text-white font-medium outline-none focus:border-[#db2d27] focus:ring-1 focus:ring-[#db2d27]/50 transition-all appearance-none cursor-pointer"
+                >
+                  <option value="" disabled>Choose your profession...</option>
+                  {PROFESSIONS.map(p => <option key={p} value={p}>{p}</option>)}
+                </select>
+              </div>
+
+              <AnimatePresence>
+                {profession === "Other" && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
+                    <input
+                      type="text"
+                      value={customProfession}
+                      onChange={(e) => setCustomProfession(e.target.value)}
+                      placeholder="Please specify your profession..."
+                      className="w-full bg-[#db2d27]/5 border border-[#db2d27]/30 hover:border-[#db2d27]/60 rounded-xl px-4 py-3.5 text-white font-medium outline-none focus:border-[#db2d27] transition-all mt-2"
+                    />
+                  </motion.div>
+                )}
+
+                {profession && profession !== "Other" && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-2">
+                    <label className="block text-[10px] font-black text-[#db2d27] uppercase tracking-[0.2em] mb-3">02. Recommended Automations</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {AUTOMATION_SCHEMAS[profession].map(schema => {
+                        const isActive = selectedAutomations.includes(schema);
+                        return (
+                          <div 
+                            key={schema} 
+                            onClick={() => setSelectedAutomations(prev => isActive ? prev.filter(a => a !== schema) : [...prev, schema])}
+                            className={`p-3 text-sm rounded-xl cursor-pointer transition-all border flex items-center justify-between group
+                              ${isActive 
+                                ? 'bg-gradient-to-r from-[#db2d27] to-[#a31f1c] border-[#db2d27] text-white font-bold shadow-[0_0_15px_rgba(219,45,39,0.3)]' 
+                                : 'bg-[#1a0a0b]/50 border-[#db2d27]/30 text-white/70 hover:bg-[#db2d27]/10 hover:border-[#db2d27]/50'}`}
+                          >
+                            {schema}
+                            <div className={`w-4 h-4 rounded-full border flex flex-shrink-0 items-center justify-center transition-colors ${isActive ? 'border-white bg-white/20' : 'border-[#db2d27]/50 group-hover:border-[#db2d27]'}`}>
+                              {isActive && <div className="w-2 h-2 bg-white rounded-full transition-all scale-in"></div>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+
+                {profession && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-4">
+                    <label className="block text-[10px] font-black text-[#db2d27] uppercase tracking-[0.2em] mb-2">03. Custom Blueprint</label>
+                    <textarea
+                      value={customAutomation}
+                      onChange={(e) => setCustomAutomation(e.target.value)}
+                      placeholder="Describe any specific automation you need (optional)..."
+                      className="w-full bg-[#db2d27]/5 border border-[#db2d27]/30 hover:border-[#db2d27]/60 rounded-xl px-4 py-3.5 text-white outline-none focus:border-[#db2d27] transition-all h-24 resize-none text-sm placeholder:text-white/30"
+                    />
+                  </motion.div>
+                )}
+
+                {profession && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-6 mt-2 border-t border-[#db2d27]/30">
+                    <label className="block text-[10px] font-black text-[#db2d27] uppercase tracking-[0.2em] mb-3">04. Deliver Proposal To</label>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <input
+                        type="text"
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="Company Name"
+                        className="w-full sm:w-1/2 bg-[#db2d27]/5 border border-[#db2d27]/30 hover:border-[#db2d27]/60 rounded-xl px-4 py-3.5 text-white outline-none focus:border-[#db2d27] transition-all placeholder:text-white/40"
+                      />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Contact Email*"
+                        className="w-full sm:w-1/2 bg-[#db2d27]/5 border border-[#db2d27]/30 hover:border-[#db2d27]/60 rounded-xl px-4 py-3.5 text-white outline-none focus:border-[#db2d27] transition-all placeholder:text-white/40"
+                      />
+                    </div>
+                    <button
+                      disabled={isSubmitting || !email}
+                      onClick={async () => {
+                        if (!email) return;
+                        setIsSubmitting(true);
+                        
+                        const finalProfession = profession === "Other" ? customProfession : profession;
+                        const sourceStr = `${finalProfession} | Architecture: ${selectedAutomations.join(", ")} | Custom: ${customAutomation}`;
+
+                        const { error } = await supabase
+                          .from("leads")
+                          .insert([{ email, company: companyName, source: sourceStr }]);
+                          
+                        setIsSubmitting(false);
+                        if (error) {
+                          showToast(`Error: ${error.message}`, false);
+                          return;
+                        }
+                        showToast("Blueprint submitted! We will contact you at " + email);
+                        setEmail("");
+                        setCompanyName("");
+                        setProfession("");
+                        setCustomProfession("");
+                        setSelectedAutomations([]);
+                        setCustomAutomation("");
+                      }}
+                      className={`w-full mt-4 py-4 font-black tracking-widest uppercase rounded-xl shadow-lg transition-all flex items-center justify-center gap-2
+                        ${!email || isSubmitting ? 'bg-[#db2d27]/20 text-white/40 cursor-not-allowed border border-[#db2d27]/10' : 'bg-gradient-to-br from-[#db2d27] to-[#a31f1c] text-white border border-[#db2d27]/50 hover:shadow-[0_0_30px_rgba(219,45,39,0.3)] hover:-translate-y-0.5'}
+                      `}
+                    >
+                      {isSubmitting ? "Processing..." : "Deploy Architecture Request"} <Send size={16} className={!email ? 'opacity-40' : ''} />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          {/* THE ORIGINAL ENTERPRISE PILL */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
